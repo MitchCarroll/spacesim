@@ -1,0 +1,14 @@
+I love Orbiter (2006, 2010, I love them both), but they both suck at running with Wine, and don't run natively in anything other than 
+Windows. This is especialy sad, because it seems to me that many of the people that would enjoy Linux, and those that would enjoy
+Orbiter are the same people.
+
+Anyway, I don't know if i could ever write the "next Orbiter", but I'm going to take a stab at writing my own take on space simulation.
+
+I'm also sick and tired of "space simulators" that simulate space itself, but not much more.
+
+I'd like to implement multiplayer capability as well. I mean, who DOESN'T want a persistant MMO space sim?
+
+Furthermore, in honor of Robert A. Heinlein, I'd like to provide some sort of interface for such things as sextants, astrolabes, slide-rules
+plotting tables, etc. That way you can have your own classic sci-fi style adventures in the style of The Rolling Stones, Rocketship Galileo,
+or maybe even Starman Jones.
+
