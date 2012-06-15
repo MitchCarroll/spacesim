@@ -43,3 +43,8 @@ Vtx Vtx::rotate(double angle, AXIS axis)
     return Vtx(x,y,z);
   }
 }
+
+Vtx Vtx::operator+(Vtx v){return translate(v);}
+Vtx Vtx::operator-(Vtx v){return translate(v.scale(-1));}
+Vtx Vtx::operator*(double d){return scale(d);}
+Vtx Vtx::operator/(Vtx v){return v;}

@@ -1,10 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 AM_CXXFLAGS = "-I$(top_srcdir) $AM_CXXFLAGS"
-#lib_LIBRARIES = libvtx.a
 lib_LTLIBRARIES = libvtx.la
-#libvtx_adir = $(includedir)/vtx
 libvtx_ladir = $(includedir)/vtx
-#libvtx_a_HEADERS = vtx.h
-#libvtx_a_SOURCES = $(libvtx_a_HEADERS) vtx.cpp
 libvtx_la_HEADERS = vtx.h
 libvtx_la_SOURCES = vtx.cpp $(libvtx_la_HEADERS)

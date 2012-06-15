@@ -5,21 +5,17 @@ AC_PREREQ([2.68])
 AC_INIT([Space Simulator], [0.0.1], [c.mitch.carroll@gmail.com])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/main.cpp])
-AC_CONFIG_SUBDIRS([vtx])
 AC_CONFIG_HEADERS([config.h])
-
+AC_CONFIG_SUBDIRS([vtx])
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
-AC_PROG_RANLIB
 
 # Checks for libraries.
-# FIXME: Replace `main' with a function in `-lGL':
 AC_CHECK_LIB([GL], [glBegin])
-# FIXME: Replace `main' with a function in `-lGLU':
 AC_CHECK_LIB([GLU], [gluPerspective])
-# FIXME: Replace `main' with a function in `-lglut':
 AC_CHECK_LIB([glut], [glutInit])
+AC_CHECK_LIB([vtx], [Vtx])
 
 # Checks for header files.
 
@@ -29,6 +25,5 @@ AC_CHECK_LIB([glut], [glutInit])
 AC_CHECK_FUNCS([sqrt])
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile
-                 vtx/Makefile])
+		 src/Makefile])
 AC_OUTPUT
