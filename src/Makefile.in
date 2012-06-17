@@ -47,7 +47,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_spacesim_OBJECTS = main.$(OBJEXT)
 spacesim_OBJECTS = $(am_spacesim_OBJECTS)
-spacesim_DEPENDENCIES =
+spacesim_DEPENDENCIES = $(top_srcdir)/vtx/libvtx.a
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -150,9 +150,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CXXFLAGS = "-I$(top_srcdir)/src $AM_CXXFLAGS"
+AM_CXXFLAGS = "-I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/vtx $AM_CXXFLAGS"
 spacesim_SOURCES = main.cpp
-spacesim_LDADD = -lvtx -lglut -lGLU -lGL $(AM_LDFLAGS)
+spacesim_LDADD = $(top_srcdir)/vtx/libvtx.a -lglut -lGLU -lGL $(AM_LDFLAGS)
 all: all-am
 
 .SUFFIXES:
