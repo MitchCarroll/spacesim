@@ -37,7 +37,7 @@ class Vtx {
   Vtx operator-(Vtx v);
   Vtx operator*(Vtx v);
   Vtx operator*(double d);
-  Vtx operator/(Vtx v);
+  Vtx operator/(double d);
 };
 
 #endif

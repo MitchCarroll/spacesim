@@ -26,6 +26,11 @@ double gravity(BODY M, BODY m)
   return G*M.mass*m.mass/pow(M.pos.distance(m.pos),2);
 }
 
+double altitude(BODY M, BODY m)
+{
+  return M.pos.distance(m.pos)-(M.radius+m.radius);
+}
+
 void initEarth(void)
 {
   Earth.mass=5.9736E24;
@@ -63,6 +68,38 @@ void display(void)
   glutSwapBuffers();
 }
 
+void timer(int t)
+{
+  if(altitude(Earth,Rocket)>0)
+    Rocket.vel=Rocket.vel+(Rocket.pos.direction(Earth.pos)*gravity(Earth,Rocket));
+  else
+    Rocket.vel=Vtx(0,0,0);
+  Rocket.pos=Rocket.pos+Rocket.vel/24;
+  Rocket.rot=Rocket.rot+Rocket.rvel/24;
+  glutPostRedisplay();
+  glutTimerFunc(1000/24,timer,1000/24);
+}
+
+void special(int key, int x, int y)
+{
+  switch(key){
+  case GLUT_KEY_LEFT:
+    Rocket.rvel.y--;
+    break;
+  case GLUT_KEY_RIGHT:
+    Rocket.rvel.y++;
+    break;
+  case GLUT_KEY_UP:
+    Rocket.rvel.x--;
+    break;
+  case GLUT_KEY_DOWN:
+    Rocket.rvel.x++;
+    break;
+  default:
+    break;
+  }
+}
+
 int main(int argc, char **argv)
 {
   initEarth();
@@ -78,6 +115,8 @@ int main(int argc, char **argv)
   glLoadIdentity();
   glClearColor(0,0,0,0);
   glutDisplayFunc(display);
+  glutTimerFunc(1000/24,timer,1000/24);
+  glutSpecialFunc(special);
   glutMainLoop();
   
   return 0;

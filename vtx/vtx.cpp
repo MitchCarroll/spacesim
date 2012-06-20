@@ -6,9 +6,9 @@ Vtx::~Vtx(void){}
 
 double Vtx::magnitude(void){ return sqrt( x*x + y*y + z*z ); }
 
-double Vtx::distance(Vtx v) { return direction(v).magnitude(); }
+double Vtx::distance(Vtx v) { return Vtx( v.x-x, v.y-y, v.z-z).magnitude(); }
 
-Vtx Vtx::direction(Vtx v){ return Vtx( x-v.x, y-v.y, z-v.z).normalize(); }
+Vtx Vtx::direction(Vtx v){ return Vtx( v.x-x, v.y-y, v.z-z).normalize(); }
 
 Vtx Vtx::translate(Vtx v){ return Vtx(x+v.x, y+v.y, z+v.z); }
 
@@ -47,4 +47,4 @@ Vtx Vtx::rotate(double angle, AXIS axis)
 Vtx Vtx::operator+(Vtx v){return translate(v);}
 Vtx Vtx::operator-(Vtx v){return translate(v.scale(-1));}
 Vtx Vtx::operator*(double d){return scale(d);}
-Vtx Vtx::operator/(Vtx v){return v;}
+Vtx Vtx::operator/(double d){return Vtx(x/d,y/d,z/d);}
