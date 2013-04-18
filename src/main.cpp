@@ -16,10 +16,12 @@ typedef struct {
   Vtx rot;       //in deg
   Vtx vel;       //in m/s
   Vtx rvel;      //in deg/s
+  Vtx thrust;    //thrust vector in m/s
 } BODY;
 
 BODY Earth;
 BODY Rocket;
+double throttle=100; //holds the throttle setting for the rocket
 
 Vtx camera;      //view angles
 GLfloat sun_pos[] = {1.0, 1.0, 1.0, 1.0};
@@ -28,6 +30,11 @@ GLfloat sun_dif[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat sun_spe[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat earth_dif[] = {0.2, 0.2, 1.0, 1.0};
 GLfloat rocket_dif[] = {0.5, 0.5, 0.5, 1.0};
+
+void setThrust(BODY b, double v)
+{
+  b.thrust=Vtx(0,0,1).rotate(b.rot.z,Z).rotate(b.rot.x,X).rotate(b.rot.y,Y)*v;
+}
 
 double gravity(BODY M, BODY m)
 {
@@ -69,22 +76,28 @@ void display(void)
   glRotatef(camera.z,0,0,1);
   glTranslatef(-Rocket.pos.x,-Rocket.pos.y,-Rocket.pos.z-Rocket.radius*zoom);
   glColor3f(.25,.3,1);
-  // glDisable(GL_LIGHTING);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
+  glDisable(GL_DEPTH_TEST);
   glutWireSphere(Earth.radius,36,18);
-  // glEnable(GL_LIGHTING);
   glLoadIdentity();
   glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
   glTranslatef(0,0,-Rocket.radius*zoom);
   glRotatef(camera.x,1,0,0);
   glRotatef(camera.y,0,1,0);
   glRotatef(camera.z,0,0,1);
+  glBegin(GL_TRIANGLES);
+  glVertex3f(0,0,0);
+  glVertex3f(0,.1,0);
+  glVertex3f(Rocket.thrust.x,Rocket.thrust.y,Rocket.thrust.z);
+  glEnd();
+  glEnable(GL_DEPTH_TEST);
+  glRotatef(Rocket.rot.z,0,0,1);
   glRotatef(Rocket.rot.x,1,0,0);
   glRotatef(Rocket.rot.y,0,1,0);
-  glRotatef(Rocket.rot.z,0,0,1);
   glColor3f(.7,.7,.7);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, rocket_dif);
   glutSolidCone(2.5,5,10,5);
+
   glutSwapBuffers();
 }
 
@@ -96,6 +109,7 @@ void timer(int t)
     Rocket.vel=Vtx(0,0,0);
   Rocket.pos=Rocket.pos+Rocket.vel/24;
   Rocket.rot=Rocket.rot+Rocket.rvel/24;
+  setThrust(Rocket, throttle);
   glutPostRedisplay();
   glutTimerFunc(1000/24,timer,1000/24);
 }
@@ -124,16 +138,16 @@ void keyboard(unsigned char key, int x, int y)
 {
   switch(key){
   case 'a':
-    camera.y--;
+    camera.y-=2;
     break;
   case 'd':
-    camera.y++;
+    camera.y+=2;
     break;
   case 'w':
-    camera.x--;
+    camera.x-=2;
     break;
   case 's':
-    camera.x++;
+    camera.x+=2;
     break;
   case ' ':
     cout << altitude(Rocket,Earth) << endl;
@@ -159,7 +173,7 @@ int main(int argc, char **argv)
   glClearColor(0,0,0,0);
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-  //  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_DEPTH_TEST);
   glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
   glLightfv(GL_LIGHT0,GL_AMBIENT,sun_amb);
   glLightfv(GL_LIGHT0,GL_DIFFUSE,sun_dif);
