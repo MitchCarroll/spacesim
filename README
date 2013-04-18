@@ -10,6 +10,6 @@ I'd like to implement multiplayer capability as well. I mean, who DOESN'T want a
 
 Furthermore, in honor of Robert A. Heinlein, I'd like to provide some sort of interface for such things as sextants, astrolabes, slide-rules
 plotting tables, etc. That way you can have your own classic sci-fi style adventures in the style of The Rolling Stones, Rocketship Galileo,
-or maybe even Starman Jones.
+or maybe even Starman Jones. Most likely, this will be in the form of an interface with pyNomo.
 
 At the moment, wasd -> camera controls(absolute), arrow keys->rotate spaceship, spacebar->print current altitude to terminal 
