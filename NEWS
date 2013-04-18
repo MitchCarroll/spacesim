@@ -1,1 +1,3 @@
 20130418 - added absolute camera controls, altitude printout, put ship in orbit
+	 - added lighting (FIXME) and basic materials. everything is still
+	 - hardcoded. TODO: Add modularity

@@ -22,6 +22,12 @@ BODY Earth;
 BODY Rocket;
 
 Vtx camera;      //view angles
+GLfloat sun_pos[] = {1.0, 1.0, 1.0, 1.0};
+GLfloat sun_amb[] = {0.2, 0.2, 0.2, 1.0};
+GLfloat sun_dif[] = {1.0, 1.0, 1.0, 1.0};
+GLfloat sun_spe[] = {1.0, 1.0, 1.0, 1.0};
+GLfloat earth_dif[] = {0.2, 0.2, 1.0, 1.0};
+GLfloat rocket_dif[] = {0.5, 0.5, 0.5, 1.0};
 
 double gravity(BODY M, BODY m)
 {
@@ -63,8 +69,12 @@ void display(void)
   glRotatef(camera.z,0,0,1);
   glTranslatef(-Rocket.pos.x,-Rocket.pos.y,-Rocket.pos.z-Rocket.radius*zoom);
   glColor3f(.25,.3,1);
-  glutWireSphere(Earth.radius,360,180);
+  // glDisable(GL_LIGHTING);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
+  glutWireSphere(Earth.radius,36,18);
+  // glEnable(GL_LIGHTING);
   glLoadIdentity();
+  glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
   glTranslatef(0,0,-Rocket.radius*zoom);
   glRotatef(camera.x,1,0,0);
   glRotatef(camera.y,0,1,0);
@@ -73,6 +83,7 @@ void display(void)
   glRotatef(Rocket.rot.y,0,1,0);
   glRotatef(Rocket.rot.z,0,0,1);
   glColor3f(.7,.7,.7);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, rocket_dif);
   glutSolidCone(2.5,5,10,5);
   glutSwapBuffers();
 }
@@ -146,6 +157,13 @@ int main(int argc, char **argv)
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glClearColor(0,0,0,0);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+  //  glEnable(GL_DEPTH_TEST);
+  glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
+  glLightfv(GL_LIGHT0,GL_AMBIENT,sun_amb);
+  glLightfv(GL_LIGHT0,GL_DIFFUSE,sun_dif);
+  glLightfv(GL_LIGHT0,GL_SPECULAR,sun_spe);
   glutDisplayFunc(display);
   glutTimerFunc(1000/24,timer,1000/24);
   glutSpecialFunc(special);
