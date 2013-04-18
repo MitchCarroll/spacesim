@@ -12,3 +12,4 @@ Furthermore, in honor of Robert A. Heinlein, I'd like to provide some sort of in
 plotting tables, etc. That way you can have your own classic sci-fi style adventures in the style of The Rolling Stones, Rocketship Galileo,
 or maybe even Starman Jones.
 
+At the moment, wasd -> camera controls(absolute), arrow keys->rotate spaceship, spacebar->print current altitude to terminal 

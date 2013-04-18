@@ -43,8 +43,9 @@ Vtx Vtx::rotate(double angle, AXIS axis)
     return Vtx(x,y,z);
   }
 }
-
+Vtx Vtx::crossProduct(Vtx v){return Vtx(y * v.z - v.y * z,z * v.x -v.z * x,x * v.y - v.x * y);}
 Vtx Vtx::operator+(Vtx v){return translate(v);}
 Vtx Vtx::operator-(Vtx v){return translate(v.scale(-1));}
 Vtx Vtx::operator*(double d){return scale(d);}
+Vtx Vtx::operator*(Vtx v){return scale(v);}
 Vtx Vtx::operator/(double d){return Vtx(x/d,y/d,z/d);}

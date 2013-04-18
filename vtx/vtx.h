@@ -33,6 +33,7 @@ class Vtx {
   Vtx scale(Vtx v);
   Vtx normalize(void);
   Vtx colorize(void);
+  Vtx crossProduct(Vtx v);
   Vtx operator+(Vtx v);
   Vtx operator-(Vtx v);
   Vtx operator*(Vtx v);
