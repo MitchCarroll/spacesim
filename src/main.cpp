@@ -9,6 +9,7 @@ const double G = 6.673E-11;
 
 double zoom=2;
 
+//TODO: FIXME: obviously, these are going to be made into classes, and split into different files
 typedef struct {
   double mass;   //in kg
   double radius; //in m (used for bounding volumes, and rendering celestial bodies)
@@ -21,9 +22,9 @@ typedef struct {
 
 BODY Earth;
 BODY Rocket;
+BODY camera; //massless
 double throttle=100; //holds the throttle setting for the rocket
 
-Vtx camera;      //view angles
 GLfloat sun_pos[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat sun_amb[] = {0.2, 0.2, 0.2, 1.0};
 GLfloat sun_dif[] = {1.0, 1.0, 1.0, 1.0};
@@ -62,7 +63,7 @@ void initRocket(void)
   Rocket.mass=1000;
   Rocket.radius=5;
   Rocket.pos=Vtx(Earth.radius*2,0,0);
-  Rocket.rot=Vtx(0,90,0);
+  Rocket.rot=Vtx(0,0,0);
   Rocket.vel=Vtx(0,1000000,0);
   Rocket.rvel=Vtx(0,0,0);
 }
@@ -71,32 +72,41 @@ void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
-  glRotatef(camera.x,1,0,0);
-  glRotatef(camera.y,0,1,0);
-  glRotatef(camera.z,0,0,1);
-  glTranslatef(-Rocket.pos.x,-Rocket.pos.y,-Rocket.pos.z-Rocket.radius*zoom);
+  glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
+  glRotatef(camera.rot.y,0,1,0);
+  glRotatef(camera.rot.x,1,0,0);
+  glRotatef(camera.rot.z,0,0,1);
+  glTranslatef(camera.pos.x,camera.pos.y,camera.pos.z);
+
+  glPushMatrix();
+  glTranslatef(-Rocket.pos.x,-Rocket.pos.y,-Rocket.pos.z);
+  glRotatef(Earth.rot.y,0,1,0);
+  glRotatef(Earth.rot.x,1,0,0);
+  glRotatef(Earth.rot.z,0,0,1);
   glColor3f(.25,.3,1);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
   glDisable(GL_DEPTH_TEST);
   glutWireSphere(Earth.radius,36,18);
-  glLoadIdentity();
-  glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
-  glTranslatef(0,0,-Rocket.radius*zoom);
-  glRotatef(camera.x,1,0,0);
-  glRotatef(camera.y,0,1,0);
-  glRotatef(camera.z,0,0,1);
+  glPopMatrix();
+
+  glPushMatrix();
+  glEnable(GL_DEPTH_TEST);
+  glRotatef(Rocket.rot.y,0,1,0);
+  glRotatef(Rocket.rot.x,1,0,0);
+  glRotatef(Rocket.rot.z,0,0,1);
+
   glBegin(GL_TRIANGLES);
   glVertex3f(0,0,0);
-  glVertex3f(0,.1,0);
-  glVertex3f(Rocket.thrust.x,Rocket.thrust.y,Rocket.thrust.z);
+  glVertex3f(0,1.25,-1);
+  glVertex3f(0,0,4);
   glEnd();
-  glEnable(GL_DEPTH_TEST);
-  glRotatef(Rocket.rot.z,0,0,1);
-  glRotatef(Rocket.rot.x,1,0,0);
-  glRotatef(Rocket.rot.y,0,1,0);
+  
   glColor3f(.7,.7,.7);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, rocket_dif);
+  glScalef(1,.25,1);
   glutSolidCone(2.5,5,10,5);
+  glPopMatrix();
+
 
   glutSwapBuffers();
 }
@@ -109,6 +119,7 @@ void timer(int t)
     Rocket.vel=Vtx(0,0,0);
   Rocket.pos=Rocket.pos+Rocket.vel/24;
   Rocket.rot=Rocket.rot+Rocket.rvel/24;
+  Earth.rot=Earth.rot+Earth.rvel/24;
   setThrust(Rocket, throttle);
   glutPostRedisplay();
   glutTimerFunc(1000/24,timer,1000/24);
@@ -138,19 +149,23 @@ void keyboard(unsigned char key, int x, int y)
 {
   switch(key){
   case 'a':
-    camera.y-=2;
+    camera.rot.y-=2;
+    camera.pos=camera.pos.rotate(-2,Y);
     break;
   case 'd':
-    camera.y+=2;
+    camera.rot.y+=2;
+    camera.pos=camera.pos.rotate(2,Y);
     break;
   case 'w':
-    camera.x-=2;
+    camera.rot.x-=2;
+    camera.pos=camera.pos.rotate(-2,X);
     break;
   case 's':
-    camera.x+=2;
+    camera.rot.x+=2;
+    camera.pos=camera.pos.rotate(2,X);
     break;
   case ' ':
-    cout << altitude(Rocket,Earth) << endl;
+    cout << altitude(Rocket,Earth) << " " << Rocket.pos.x << " " << Rocket.pos.y << " " << Rocket.pos.z << endl;
   default:
     break;
   }
@@ -160,7 +175,7 @@ int main(int argc, char **argv)
 {
   initEarth();
   initRocket();
-  camera=Vtx(0,180,0);
+  camera.pos=Vtx(0,0,-Rocket.radius*zoom);
   glutInit(&argc,argv);
   glutInitWindowSize(512,512);
   glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE|GLUT_DEPTH);
