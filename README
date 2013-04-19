@@ -1,15 +1,25 @@
-I love Orbiter (2006, 2010, I love them both), but they both suck at running with Wine, and don't run natively in anything other than 
-Windows. This is especialy sad, because it seems to me that many of the people that would enjoy Linux, and those that would enjoy
-Orbiter are the same people.
+I love Orbiter (2006, 2010, I love them both), but they both suck at running with Wine, and don't run natively in 
+anything other than Windows. This is especialy sad, because it seems to me that many of the people that would enjoy 
+Linux, and those that would enjoy Orbiter are the same people.
 
-Anyway, I don't know if i could ever write the "next Orbiter", but I'm going to take a stab at writing my own take on space simulation.
+Anyway, I don't know if i could ever write the "next Orbiter", but I'm going to take a stab at writing my own take on 
+space simulation.
 
-I'm also sick and tired of "space simulators" that simulate space itself, but not much more.
+I'm also sick and tired of "space simulators" that simulate space itself, but not much more, or that gives you
+'newtonian' motion, but with no gravity! Probably THE WORST give you non-inertial movement, no gravity, no physics.
 
-I'd like to implement multiplayer capability as well. I mean, who DOESN'T want a persistant MMO space sim?
+Elite/OOlite is still pretty cool, though..
 
-Furthermore, in honor of Robert A. Heinlein, I'd like to provide some sort of interface for such things as sextants, astrolabes, slide-rules
-plotting tables, etc. That way you can have your own classic sci-fi style adventures in the style of The Rolling Stones, Rocketship Galileo,
-or maybe even Starman Jones. Most likely, this will be in the form of an interface with pyNomo.
+I'd like to implement multiplayer capability as well. I mean, who DOESN'T want a persistant, realistic MMO space sim?
 
-At the moment, wasd -> camera controls(absolute), arrow keys->rotate spaceship, spacebar->print current altitude to terminal 
+Furthermore, in honor of Robert A. Heinlein, I'd like to provide some sort of interface for such things as sextants, 
+astrolabes, slide-rules plotting tables, etc. That way you can have your own classic sci-fi style adventures in the 
+style of The Rolling Stones, Rocketship Galileo, or maybe even Starman Jones. Most likely, this will be in the form of 
+an interface with pyNomo or some such.
+
+At the moment, wasd -> camera controls(absolute), arrow keys->rotate spaceship, spacebar->print current altitude and 
+coordinates to terminal 
+
+I am trying to get the basic features all working, and then I'm going to clean up and modularize the code, and build an
+API. Considering using Guile or Python as the extension language. For 3D models, I still need to decide on a file format
+that I can read into the program easily, but without a bunch of overhead (like .blend). must play nicely with Blender.
