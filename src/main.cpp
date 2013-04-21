@@ -103,7 +103,7 @@ void display(void)
   glRotatef(Earth.rot.z,0,0,1);
   glColor3f(.25,.3,1);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
-  glDisable(GL_DEPTH_TEST);
+  //  glDisable(GL_DEPTH_TEST);
   glutSolidSphere(Earth.radius,36,18);
   glPopMatrix();
 
@@ -182,13 +182,15 @@ int main(int argc, char **argv)
   glutCreateWindow("Orbit Sim");
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(90,1,0.001,1.7E308);
+  gluPerspective(90,1,.1,1.7E308);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glClearColor(0,0,0,0);
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
+  glDepthFunc(GL_LEQUAL);
   glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
   glLightfv(GL_LIGHT0,GL_AMBIENT,sun_amb);
   glLightfv(GL_LIGHT0,GL_DIFFUSE,sun_dif);
