@@ -1,1 +1,1 @@
-SUBDIRS = vtx src
+SUBDIRS = vtx quat src

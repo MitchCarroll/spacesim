@@ -1,20 +1,5 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Define to 1 if you have the `GL' library (-lGL). */
-#undef HAVE_LIBGL
-
-/* Define to 1 if you have the `GLU' library (-lGLU). */
-#undef HAVE_LIBGLU
-
-/* Define to 1 if you have the `glut' library (-lglut). */
-#undef HAVE_LIBGLUT
-
-/* Define to 1 if you have the `quat' library (-lquat). */
-#undef HAVE_LIBQUAT
-
-/* Define to 1 if you have the `vtx' library (-lvtx). */
-#undef HAVE_LIBVTX
-
 /* Define to 1 if you have the `sqrt' function. */
 #undef HAVE_SQRT
 

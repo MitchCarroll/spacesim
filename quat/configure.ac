@@ -2,21 +2,20 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([Space Simulator], [0.0.1], [c.mitch.carroll@gmail.com])
+AC_INIT([Quat Lib], [1.0], [c.mitch.carroll@gmail.com])
 AM_INIT_AUTOMAKE
-AC_CONFIG_SRCDIR([src/main.cpp])
+#LT_INIT
+AC_CONFIG_SRCDIR([quat.h])
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SUBDIRS([vtx quat])
+#AC_CONFIG_MACRO_DIR([m4])
+
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
+AC_PROG_RANLIB
+#AC_PROG_LIBTOOL
 
 # Checks for libraries.
-AC_CHECK_LIB([GL], [glBegin])
-AC_CHECK_LIB([GLU], [gluPerspective])
-AC_CHECK_LIB([glut], [glutInit])
-AC_CHECK_LIB([vtx], [Vtx])
-AC_CHECK_LIB([quat], [Quat])
 
 # Checks for header files.
 
@@ -25,6 +24,5 @@ AC_CHECK_LIB([quat], [Quat])
 # Checks for library functions.
 AC_CHECK_FUNCS([sqrt])
 
-AC_CONFIG_FILES([Makefile
-		 src/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cmath>
 #include <vtx/vtx.h> 
+#include <quat/quat.h>
 using namespace std;
 
 const double G = 6.673E-11;
@@ -32,9 +33,9 @@ GLfloat sun_spe[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat earth_dif[] = {0.2, 0.2, 1.0, 1.0};
 GLfloat rocket_dif[] = {0.5, 0.5, 0.5, 1.0};
 
-void setThrust(BODY b, double v)
+void setThrust(BODY &b, double v)
 {
-  b.thrust=Vtx(0,0,1).rotate(b.rot.z,Z).rotate(b.rot.x,X).rotate(b.rot.y,Y)*v;
+  b.thrust=Vtx(0,0,1).rotate(b.rot.y,Y).rotate(b.rot.x,X).rotate(b.rot.z,Z)*v;
 }
 
 double gravity(BODY M, BODY m)
@@ -62,9 +63,9 @@ void initRocket(void)
 {
   Rocket.mass=1000;
   Rocket.radius=5;
-  Rocket.pos=Vtx(Earth.radius*2,0,0);
+  Rocket.pos=Vtx(Earth.radius+35786000,0,0);
   Rocket.rot=Vtx(0,0,0);
-  Rocket.vel=Vtx(0,1000000,0);
+  Rocket.vel=Vtx(0,0,110680);
   Rocket.rvel=Vtx(0,0,0);
 }
 
@@ -80,6 +81,12 @@ void display(void)
 
   glPushMatrix();
   glEnable(GL_DEPTH_TEST);
+  glBegin(GL_TRIANGLES);
+  glVertex3f(0,0,0);
+  glVertex3f(0,-1,0);
+  glVertex3f(Rocket.thrust.x,Rocket.thrust.y,Rocket.thrust.z);
+  glEnd();
+
   glRotatef(Rocket.rot.y,0,1,0);
   glRotatef(Rocket.rot.x,1,0,0);
   glRotatef(Rocket.rot.z,0,0,1);
