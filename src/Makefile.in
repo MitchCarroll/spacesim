@@ -62,7 +62,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_spacesim_OBJECTS = main.$(OBJEXT)
+am_spacesim_OBJECTS = main.$(OBJEXT) body.$(OBJEXT)
 spacesim_OBJECTS = $(am_spacesim_OBJECTS)
 spacesim_DEPENDENCIES = $(top_srcdir)/vtx/libvtx.a \
 	$(top_srcdir)/quat/libquat.a
@@ -75,6 +75,10 @@ CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
+COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(spacesim_SOURCES)
 DIST_SOURCES = $(spacesim_SOURCES)
 am__can_run_installinfo = \
@@ -174,7 +178,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AM_CXXFLAGS = "-I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/vtx -I$(top_srcdir)/quat $AM_CXXFLAGS"
-spacesim_SOURCES = main.cpp
+spacesim_SOURCES = main.cpp body.cpp body.h
 spacesim_LDADD = $(top_srcdir)/vtx/libvtx.a $(top_srcdir)/quat/libquat.a -lglut -lGLU -lGL $(AM_LDFLAGS)
 all: all-am
 
@@ -260,6 +264,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/body.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 
 .cpp.o:

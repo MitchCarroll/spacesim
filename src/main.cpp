@@ -4,26 +4,17 @@
 #include <cmath>
 #include <vtx/vtx.h> 
 #include <quat/quat.h>
+#include <body.h>
 using namespace std;
 
-const double G = 6.673E-11;
 
 double zoom=2;
 
 //TODO: FIXME: obviously, these are going to be made into classes, and split into different files
-typedef struct {
-  double mass;   //in kg
-  double radius; //in m (used for bounding volumes, and rendering celestial bodies)
-  Vtx pos;       //in m
-  Vtx rot;       //in deg
-  Vtx vel;       //in m/s
-  Vtx rvel;      //in deg/s
-  Vtx thrust;    //thrust vector in m/s
-} BODY;
 
-BODY Earth;
-BODY Rocket;
-BODY camera; //massless
+Body Earth;
+Body Rocket;
+Body camera; //massless
 double throttle=100; //holds the throttle setting for the rocket
 
 GLfloat sun_pos[] = {1.0, 1.0, 1.0, 1.0};
@@ -32,21 +23,6 @@ GLfloat sun_dif[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat sun_spe[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat earth_dif[] = {0.2, 0.2, 1.0, 1.0};
 GLfloat rocket_dif[] = {0.5, 0.5, 0.5, 1.0};
-
-void setThrust(BODY &b, double v)
-{
-  b.thrust=Vtx(0,0,1).rotate(b.rot.y,Y).rotate(b.rot.x,X).rotate(b.rot.z,Z)*v;
-}
-
-double gravity(BODY M, BODY m)
-{
-  return G*M.mass*m.mass/pow(M.pos.distance(m.pos),2);
-}
-
-double altitude(BODY M, BODY m)
-{
-  return M.pos.distance(m.pos)-(M.radius+m.radius);
-}
 
 void initEarth(void)
 {
@@ -119,14 +95,14 @@ void display(void)
 
 void timer(int t)
 {
-  if(altitude(Earth,Rocket)>0)
-    Rocket.vel=Rocket.vel+(Rocket.pos.direction(Earth.pos)*gravity(Earth,Rocket));
+  if(Rocket.altitude(Earth)>0)
+    Rocket.vel=Rocket.vel+(Rocket.pos.direction(Earth.pos)*Earth.gravity(Rocket));
   else
     Rocket.vel=Vtx(0,0,0);
   Rocket.pos=Rocket.pos+Rocket.vel/24;
-  Rocket.rot=Rocket.rot+Rocket.rvel/24;
-  Earth.rot=Earth.rot+Earth.rvel/24;
-  setThrust(Rocket, throttle);
+  Rocket.rot=Rocket.rot.vtx()+Rocket.rvel.vtx()/24;
+  Earth.rot=Earth.rot.vtx()+Earth.rvel.vtx()/24;
+  Rocket.setThrust(throttle);
   glutPostRedisplay();
   glutTimerFunc(1000/24,timer,1000/24);
 }
@@ -172,7 +148,7 @@ void keyboard(unsigned char key, int x, int y)
     
     break;
   case ' ':
-    cout << altitude(Rocket,Earth) << " " << Rocket.pos.x << " " << Rocket.pos.y << " " << Rocket.pos.z << endl;
+    cout << Rocket.altitude(Earth) << " " << Rocket.pos.x << " " << Rocket.pos.y << " " << Rocket.pos.z << endl;
   default:
     break;
   }
