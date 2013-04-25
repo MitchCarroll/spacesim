@@ -1,3 +1,4 @@
 20130418 - added absolute camera controls, altitude printout, put ship in orbit
 	 - added lighting (FIXME) and basic materials. everything is still
 	 - hardcoded. TODO: Add modularity
+20130425 - added Quat class, and split some of main.cpp into the Body class and header.
