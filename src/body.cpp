@@ -5,7 +5,7 @@ Body::Body(){}
 Body::~Body(){}
 void Body::setThrust(double v)
 {
-  thrust=Vtx(0,0,1).rotate(rot.y,Y).rotate(rot.x,X).rotate(rot.z,Z)*v;
+  thrust=Vtx(0,0,1).rotate(rot.vtx().y,Y).rotate(rot.vtx().x,X).rotate(rot.vtx().z,Z)*v;
 }
 
 double Body::gravity(Body m)

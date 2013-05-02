@@ -7,10 +7,7 @@
 #include <body.h>
 using namespace std;
 
-
 double zoom=2;
-
-//TODO: FIXME: obviously, these are going to be made into classes, and split into different files
 
 Body Earth;
 Body Rocket;
@@ -29,9 +26,9 @@ void initEarth(void)
   Earth.mass=5.9736E24;
   Earth.radius=6371E3;
   Earth.pos=Vtx(0,0,0);
-  Earth.rot=Vtx(0,0,0);
+  Earth.rot=Quat(23.5,Vtx(1,0,0)); //give the Earth it's tilt
   Earth.vel=Vtx(0,0,0);
-  Earth.rvel=Vtx(0,360.0/24/60/60,0);
+  Earth.rvel=Quat(360/24/60/60,Vtx(0,1,0)); //start the Earth spinning
   
 }
 
@@ -40,9 +37,9 @@ void initRocket(void)
   Rocket.mass=1000;
   Rocket.radius=5;
   Rocket.pos=Vtx(Earth.radius+35786000,0,0);
-  Rocket.rot=Vtx(0,0,0);
+  Rocket.rot=Quat(1,0,0,0);
   Rocket.vel=Vtx(0,0,110680);
-  Rocket.rvel=Vtx(0,0,0);
+  Rocket.rvel=Quat(1,0,0,0);
 }
 
 void display(void)
@@ -50,9 +47,9 @@ void display(void)
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
-  glRotatef(-camera.rot.y,0,1,0);
-  glRotatef(-camera.rot.x,1,0,0);
-  glRotatef(-camera.rot.z,0,0,1);
+  glRotatef(-camera.rot.vtx().y,0,1,0);
+  glRotatef(-camera.rot.vtx().x,1,0,0);
+  glRotatef(-camera.rot.vtx().z,0,0,1);
   glTranslatef(camera.pos.x,camera.pos.y,camera.pos.z);
 
   glPushMatrix();
@@ -63,9 +60,9 @@ void display(void)
   glVertex3f(Rocket.thrust.x,Rocket.thrust.y,Rocket.thrust.z);
   glEnd();
 
-  glRotatef(Rocket.rot.y,0,1,0);
-  glRotatef(Rocket.rot.x,1,0,0);
-  glRotatef(Rocket.rot.z,0,0,1);
+  glRotatef(Rocket.rot.vtx().y,0,1,0);
+  glRotatef(Rocket.rot.vtx().x,1,0,0);
+  glRotatef(Rocket.rot.vtx().z,0,0,1);
 
   glBegin(GL_TRIANGLES);
   glVertex3f(0,0,0);
@@ -81,9 +78,9 @@ void display(void)
 
   glPushMatrix();
   glTranslatef(-Rocket.pos.x,-Rocket.pos.y,-Rocket.pos.z);
-  glRotatef(Earth.rot.y,0,1,0);
-  glRotatef(Earth.rot.x,1,0,0);
-  glRotatef(Earth.rot.z,0,0,1);
+  glRotatef(Earth.rot.vtx().y,0,1,0);
+  glRotatef(Earth.rot.vtx().x,1,0,0);
+  glRotatef(Earth.rot.vtx().z,0,0,1);
   glColor3f(.25,.3,1);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
   //  glDisable(GL_DEPTH_TEST);
