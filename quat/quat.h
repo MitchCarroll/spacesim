@@ -23,6 +23,7 @@ class Quat {
   Quat operator*(Vtx v);
   Quat operator*(double s);
   Vtx rotate(Vtx v);
+  Quat getRotation();
 };
 
 #endif

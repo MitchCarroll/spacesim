@@ -95,3 +95,21 @@ Vtx Quat::rotate(Vtx v)
   r=r.multiply(q); //(qv)q^(-1)
   return q.vtx(); //is correct?
 }
+
+Quat Quat::getRotation()
+{
+  Quat q=this->normalize();
+  Quat r;
+  r.w=Acos(q.w)*2;
+  double s=sqrt(1-q.w*q.w);
+  if(s<0.001) {
+    r.x=q.x;
+    r.y=q.y;
+    r.z=q.z;
+  } else {
+    r.x=q.x/s;
+    r.y=q.y/s;
+    r.z=q.z/s;
+  }
+  return r;
+}
