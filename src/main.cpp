@@ -107,10 +107,10 @@ void special(int key, int x, int y)
 {
   switch(key){
   case GLUT_KEY_LEFT:
-    Rocket.rvel=Rocket.rvel*Quat(1,Vtx(0,1,0));
+    Rocket.rvel=Rocket.rvel*Quat(1,Vtx(0,0,1));
     break;
   case GLUT_KEY_RIGHT:
-    Rocket.rvel=Rocket.rvel*Quat(-1,Vtx(0,1,0));
+    Rocket.rvel=Rocket.rvel*Quat(-1,Vtx(0,0,1));
     break;
   case GLUT_KEY_UP:
     Rocket.rvel=Rocket.rvel*Quat(-1,Vtx(1,0,0));
