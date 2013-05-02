@@ -28,7 +28,7 @@ void initEarth(void)
   Earth.pos=Vtx(0,0,0);
   Earth.rot=Quat(23.5,Vtx(1,0,0)); //give the Earth it's tilt
   Earth.vel=Vtx(0,0,0);
-  Earth.rvel=Quat(360/24/60/60,Vtx(0,1,0)); //start the Earth spinning
+  Earth.rvel=Quat(360/24/60/60/24,Vtx(0,1,0)); //start the Earth spinning
   
 }
 
@@ -59,10 +59,9 @@ void display(void)
   glVertex3f(0,-1,0);
   glVertex3f(Rocket.thrust.x,Rocket.thrust.y,Rocket.thrust.z);
   glEnd();
-
-  glRotatef(Rocket.rot.vtx().y,0,1,0);
-  glRotatef(Rocket.rot.vtx().x,1,0,0);
-  glRotatef(Rocket.rot.vtx().z,0,0,1);
+  
+  Quat r=Rocket.rot.getRotation();
+  glRotatef(r.w,r.x,r.y,r.z);
 
   glBegin(GL_TRIANGLES);
   glVertex3f(0,0,0);
@@ -97,8 +96,8 @@ void timer(int t)
   else
     Rocket.vel=Vtx(0,0,0);
   Rocket.pos=Rocket.pos+Rocket.vel/24;
-  Rocket.rot=Rocket.rot.vtx()+Rocket.rvel.vtx()/24;
-  Earth.rot=Earth.rot.vtx()+Earth.rvel.vtx()/24;
+  Rocket.rot=Rocket.rot*Rocket.rvel;
+  Earth.rot=Earth.rot*Earth.rvel;
   Rocket.setThrust(throttle);
   glutPostRedisplay();
   glutTimerFunc(1000/24,timer,1000/24);
@@ -108,16 +107,16 @@ void special(int key, int x, int y)
 {
   switch(key){
   case GLUT_KEY_LEFT:
-    Rocket.rvel.y--;
+    Rocket.rvel=Rocket.rvel*Quat(1,Vtx(0,1,0));
     break;
   case GLUT_KEY_RIGHT:
-    Rocket.rvel.y++;
+    Rocket.rvel=Rocket.rvel*Quat(-1,Vtx(0,1,0));
     break;
   case GLUT_KEY_UP:
-    Rocket.rvel.x--;
+    Rocket.rvel=Rocket.rvel*Quat(-1,Vtx(1,0,0));
     break;
   case GLUT_KEY_DOWN:
-    Rocket.rvel.x++;
+    Rocket.rvel=Rocket.rvel*Quat(1,Vtx(1,0,0));
     break;
   default:
     break;

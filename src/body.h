@@ -14,6 +14,7 @@ class Body {
   void setThrust(double v);
   double gravity(Body m);
   double altitude(Body m);
+  
   double mass;   //in kg
   double radius; //in m (used for bounding volumes, and rendering celestial bodies)
   Vtx pos;       //in m
