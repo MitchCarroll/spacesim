@@ -91,13 +91,15 @@ void display(void)
 
 void timer(int t)
 {
-  if(Rocket.altitude(Earth)>0)
+  if(Rocket.altitude(Earth)>0) 
     Rocket.vel=Rocket.vel+(Rocket.pos.direction(Earth.pos)*Earth.gravity(Rocket));
-  else
+  else {
     Rocket.vel=Vtx(0,0,0);
+    Rocket.rvel=Quat();
+  }
   Rocket.pos=Rocket.pos+Rocket.vel/24;
-  Rocket.rot=Rocket.rot*Rocket.rvel;
-  Earth.rot=Earth.rot*Earth.rvel;
+  Rocket.rot=Rocket.rot.normalize()*Rocket.rvel.normalize();
+  Earth.rot=Earth.rot.normalize()*Earth.rvel.normalize();
   Rocket.setThrust(throttle);
   glutPostRedisplay();
   glutTimerFunc(1000/24,timer,1000/24);
@@ -107,16 +109,16 @@ void special(int key, int x, int y)
 {
   switch(key){
   case GLUT_KEY_LEFT:
-    Rocket.rvel=Rocket.rvel*Quat(1,Vtx(0,0,1));
+    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(0,0,1));
     break;
   case GLUT_KEY_RIGHT:
-    Rocket.rvel=Rocket.rvel*Quat(-1,Vtx(0,0,1));
+    Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(0,0,1));
     break;
   case GLUT_KEY_UP:
-    Rocket.rvel=Rocket.rvel*Quat(-1,Vtx(1,0,0));
+    Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(1,0,0));
     break;
   case GLUT_KEY_DOWN:
-    Rocket.rvel=Rocket.rvel*Quat(1,Vtx(1,0,0));
+    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(1,0,0));
     break;
   default:
     break;

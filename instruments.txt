@@ -1,0 +1,11 @@
+orbit plotter / map
+orbital elements
+attitude indicator "8-ball" / compass / artificial horizon
+periscope / sextant / rangefinder / camera
+rotational velocity indicators
+accelerometers / delta-v vector "log line"
+clocks / timers
+Tsiolkovsky rocket equation solver (E6B style?) 
+propellant flow rate
+
+
