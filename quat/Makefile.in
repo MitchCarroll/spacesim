@@ -52,10 +52,9 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(libquat_a_HEADERS) \
-	$(srcdir)/../depcomp $(srcdir)/../install-sh \
-	$(srcdir)/../missing $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/config.h.in $(top_srcdir)/configure AUTHORS COPYING \
+	ChangeLog INSTALL NEWS depcomp install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -103,7 +102,7 @@ am__objects_1 =
 am_libquat_a_OBJECTS = quat.$(OBJEXT) $(am__objects_1)
 libquat_a_OBJECTS = $(am_libquat_a_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@
-depcomp = $(SHELL) $(top_srcdir)/../depcomp
+depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
@@ -228,13 +227,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-
-#ACLOCAL_AMFLAGS = -I m4
-AM_CXXFLAGS = "-I$(top_srcdir) -I$(top_srcdir)/vtx -I$(top_srcdir)/quat $AM_CXXFLAGS"
-#lib_LTLIBRARIES = libquat.la
-#libquat_ladir = $(includedir)/quat
-#libquat_la_HEADERS = quat.h
-#libquat_la_SOURCES = quat.cpp $(libquat_la_HEADERS)
+AM_CXXFLAGS = "-I$(top_distdir) -I$(top_distdir)/vtx $AM_CXXFLAGS"
 lib_LIBRARIES = libquat.a
 libquat_adir = $(includedir)/quat
 libquat_a_HEADERS = quat.h

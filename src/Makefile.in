@@ -51,7 +51,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = spacesim$(EXEEXT)
 subdir = src
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
+DIST_COMMON = README $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	AUTHORS COPYING ChangeLog INSTALL NEWS
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -64,8 +65,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_spacesim_OBJECTS = main.$(OBJEXT) body.$(OBJEXT)
 spacesim_OBJECTS = $(am_spacesim_OBJECTS)
-spacesim_DEPENDENCIES = $(top_srcdir)/vtx/libvtx.a \
-	$(top_srcdir)/quat/libquat.a
+spacesim_DEPENDENCIES = $(top_builddir)/vtx/libvtx.a \
+	$(top_builddir)/quat/libquat.a
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -177,9 +178,10 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CXXFLAGS = "-I$(top_srcdir) -I$(top_srcdir)/src -I$(top_srcdir)/vtx -I$(top_srcdir)/quat $AM_CXXFLAGS"
+AM_CXXFLAGS = "-I$(top_distdir) -I$(top_distdir)/src -I$(top_distdir)/vtx -I$(top_distdir)/quat $AM_CXXFLAGS"
 spacesim_SOURCES = main.cpp body.cpp body.h
-spacesim_LDADD = $(top_srcdir)/vtx/libvtx.a $(top_srcdir)/quat/libquat.a -lglut -lGLU -lGL $(AM_LDFLAGS)
+spacesim_LDADD = $(top_builddir)/vtx/libvtx.a $(top_builddir)/quat/libquat.a $(AM_LDFLAGS)
+spacesim_LIBS = "-lglut -lGLU -lGL"
 all: all-am
 
 .SUFFIXES:

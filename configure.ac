@@ -3,6 +3,7 @@
 
 AC_PREREQ([2.68])
 AC_INIT([Space Simulator], [0.0.1], [c.mitch.carroll@gmail.com])
+AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])

@@ -1,19 +1,23 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.68])
-AC_INIT([libquat], [1.0], [c.mitch.carroll@gmail.com])
+AC_PREREQ([2.69])
+AC_INIT([Space Sim], [0.1], [c.mitch.carroll@gmail.com])
 AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE
-AC_CONFIG_SRCDIR([quat.h])
+AC_CONFIG_SRCDIR([main.cpp])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
-AC_PROG_RANLIB
 
 # Checks for libraries.
+AC_CHECK_LIB([GL], [glBegin])
+AC_CHECK_LIB([GLU], [gluPerspective])
+AC_CHECK_LIB([glut], [glutInit])
+AC_CHECK_LIB([vtx], [Vtx])
+AC_CHECK_LIB([quat], [Quat])
 
 # Checks for header files.
 
