@@ -9,3 +9,4 @@ Tsiolkovsky rocket equation solver (E6B style?)
 propellant flow rate
 
 
+delta-v remaining?
