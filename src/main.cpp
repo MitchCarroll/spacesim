@@ -38,7 +38,7 @@ void initRocket(void)
   Rocket.radius=5;
   Rocket.pos=Vtx(Earth.radius+35786000,0,0);
   Rocket.rot=Quat(1,0,0,0);
-  Rocket.vel=Vtx(0,0,110680);
+  Rocket.vel=Vtx(0,0,110680*3);
   Rocket.rvel=Quat(1,0,0,0);
 }
 
@@ -146,7 +146,7 @@ void keyboard(unsigned char key, int x, int y)
     
     break;
   case ' ':
-    cout << Rocket.altitude(Earth) << " " << Rocket.pos.x << " " << Rocket.pos.y << " " << Rocket.pos.z << endl;
+    cout << Rocket.altitude(Earth) << " " << Rocket.vel.magnitude() << " " << Rocket.pos.x << " " << Rocket.pos.y << " " << Rocket.pos.z << endl;
   default:
     break;
   }
