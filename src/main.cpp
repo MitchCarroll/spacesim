@@ -38,7 +38,7 @@ void initRocket(void)
   Rocket.radius=5;
   Rocket.pos=Vtx(Earth.radius+35786000,0,0);
   Rocket.rot=Quat(1,0,0,0);
-  Rocket.vel=Vtx(0,0,110680*4);
+  Rocket.vel=Vtx(0,0,110680*4); //TODO: find a good value FIXME: use a config
   Rocket.rvel=Quat(1,0,0,0);
 }
 
