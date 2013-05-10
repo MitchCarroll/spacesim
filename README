@@ -17,7 +17,7 @@ astrolabes, slide-rules plotting tables, etc. That way you can have your own cla
 style of The Rolling Stones, Rocketship Galileo, or maybe even Starman Jones. Most likely, this will be in the form of 
 an interface with pyNomo or some such.
 
-At the moment, wasd -> camera controls(absolute), arrow keys->rotate spaceship, spacebar->print current altitude and 
+At the moment, wasd -> camera controls(absolute), arrow keys->rotate spaceship, spacebar->print current altitude, velocity (I know, I know), and 
 coordinates to terminal 
 
 I am trying to get the basic features all working, and then I'm going to clean up and modularize the code, and build an
