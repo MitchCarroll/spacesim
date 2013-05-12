@@ -1,4 +1,4 @@
-AM_CXXFLAGS = "-I$(top_distdir) -I$(top_distdir)/vtx $AM_CXXFLAGS"
+AM_CXXFLAGS = -I$(top_builddir) -I$(top_builddir)/vtx
 lib_LIBRARIES = libquat.a
 libquat_adir = $(includedir)/quat
 libquat_a_HEADERS = quat.h

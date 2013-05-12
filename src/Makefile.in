@@ -178,7 +178,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CXXFLAGS = "-I$(top_distdir) -I$(top_distdir)/src -I$(top_distdir)/vtx -I$(top_distdir)/quat $AM_CXXFLAGS"
+AM_CPPFLAGS = -DDATADIR='"$(pkgdatadir)/"'
+AM_CXXFLAGS = -I$(top_builddir) -I$(top_builddir)/src -I$(top_builddir)/vtx -I$(top_builddir)/quat
 spacesim_SOURCES = main.cpp body.cpp body.h
 spacesim_LDADD = $(top_builddir)/vtx/libvtx.a $(top_builddir)/quat/libquat.a $(AM_LDFLAGS)
 spacesim_LIBS = "-lglut -lGLU -lGL"
