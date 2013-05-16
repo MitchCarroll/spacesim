@@ -12,17 +12,53 @@ double zoom=2;
 Body Earth;
 Body Rocket;
 Body camera; //massless
+GLUquadricObj *earthMesh;
 double throttle=100; //holds the throttle setting for the rocket
 
 GLfloat sun_pos[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat sun_amb[] = {0.2, 0.2, 0.2, 1.0};
 GLfloat sun_dif[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat sun_spe[] = {1.0, 1.0, 1.0, 1.0};
-GLfloat earth_dif[] = {0.2, 0.2, 1.0, 1.0};
+GLfloat earth_dif[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat rocket_dif[] = {0.5, 0.5, 0.5, 1.0};
+
+GLubyte *etD;
+GLuint earthTexture=0;
+int etW=0, etH=0;
+
+void loadTexture(const char *filename)
+{
+  ifstream infile;
+  infile.open(filename);
+  infile >> etW >> etH;
+  GLubyte *temp=new GLubyte[etW*etH*3];
+  etD=new GLubyte[etW*etH*3];
+  for(int b=0;b<etW*etH*3;b+=3) {
+    etD[b+2]=infile.get();
+    etD[b+1]=infile.get();
+    etD[b]=infile.get();
+  }
+  infile.close();
+  cout << etW << "x" << etH << endl;
+  glGenTextures(1,&earthTexture);
+  glBindTexture(GL_TEXTURE_2D, earthTexture);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 
+	       etW, etH, 
+	       0, GL_RGB, GL_UNSIGNED_BYTE, etD);
+  delete [] etD,temp;
+}
 
 void initEarth(void)
 {
+  loadTexture(DATADIR "earth.pnm");
+  earthMesh=gluNewQuadric();
+  gluQuadricDrawStyle(earthMesh, GLU_FILL);
+  gluQuadricTexture(earthMesh, GL_TRUE);
+  gluQuadricNormals(earthMesh, GLU_SMOOTH);
   Earth.mass=5.9736E24;
   Earth.radius=6371E3;
   Earth.pos=Vtx(0,0,0);
@@ -64,8 +100,11 @@ void display(void)
   glRotatef(r.w,r.x,r.y,r.z);
 
   glBegin(GL_TRIANGLES);
+  glTexCoord2f(0,0);
   glVertex3f(0,0,0);
+  glTexCoord2f(1,0);
   glVertex3f(0,1.25,-1);
+  glTexCoord2f(1,1);
   glVertex3f(0,0,4);
   glEnd();
   
@@ -80,10 +119,12 @@ void display(void)
   glRotatef(Earth.rot.vtx().y,0,1,0);
   glRotatef(Earth.rot.vtx().x,1,0,0);
   glRotatef(Earth.rot.vtx().z,0,0,1);
+  glBindTexture(GL_TEXTURE_2D, earthTexture);
   glColor3f(.25,.3,1);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
   //  glDisable(GL_DEPTH_TEST);
-  glutSolidSphere(Earth.radius,36,18);
+  //  glutSolidSphere(Earth.radius,36,18);
+  gluSphere(earthMesh,Earth.radius,36,18);
   glPopMatrix();
 
   glutSwapBuffers();
@@ -154,8 +195,6 @@ void keyboard(unsigned char key, int x, int y)
 
 int main(int argc, char **argv)
 {
-  initEarth();
-  initRocket();
   camera.pos=Vtx(0,0,-Rocket.radius*zoom);
   glutInit(&argc,argv);
   glutInitWindowSize(512,512);
@@ -167,7 +206,9 @@ int main(int argc, char **argv)
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
   glClearColor(0,0,0,0);
+  glEnable(GL_TEXTURE_2D);
   glEnable(GL_LIGHTING);
+  glShadeModel(GL_SMOOTH);
   glEnable(GL_LIGHT0);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
@@ -179,6 +220,8 @@ int main(int argc, char **argv)
   glutDisplayFunc(display);
   glutTimerFunc(1000/24,timer,1000/24);
   glutSpecialFunc(special);
+  initEarth();
+  initRocket();
   glutKeyboardFunc(keyboard);
   glutMainLoop();
   
