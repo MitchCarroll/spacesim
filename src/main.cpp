@@ -15,7 +15,7 @@ Body camera; //massless
 GLUquadricObj *earthMesh;
 double throttle=100; //holds the throttle setting for the rocket
 
-GLfloat sun_pos[] = {1.0, 1.0, 1.0, 1.0};
+GLfloat sun_pos[] = {1.0, 0.0, 0.0, 0.0};
 GLfloat sun_amb[] = {0.2, 0.2, 0.2, 1.0};
 GLfloat sun_dif[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat sun_spe[] = {1.0, 1.0, 1.0, 1.0};
@@ -33,10 +33,12 @@ void loadTexture(const char *filename)
   infile >> etW >> etH;
   GLubyte *temp=new GLubyte[etW*etH*3];
   etD=new GLubyte[etW*etH*3];
-  for(int b=0;b<etW*etH*3;b+=3) {
-    etD[b+2]=infile.get();
-    etD[b+1]=infile.get();
-    etD[b]=infile.get();
+  for(int line=0;line<etH;line++) {
+    for(int byte=etW*3;byte>0;byte-=3) {
+      etD[line*etW*3+byte+2]=infile.get();
+      etD[line*etW*3+byte+1]=infile.get();
+      etD[line*etW*3+byte]=infile.get();
+    }
   }
   infile.close();
   cout << etW << "x" << etH << endl;
@@ -46,9 +48,9 @@ void loadTexture(const char *filename)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 
+  gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB,
 	       etW, etH, 
-	       0, GL_RGB, GL_UNSIGNED_BYTE, etD);
+	       GL_RGB, GL_UNSIGNED_BYTE, etD);
   delete [] etD,temp;
 }
 
@@ -62,9 +64,9 @@ void initEarth(void)
   Earth.mass=5.9736E24;
   Earth.radius=6371E3;
   Earth.pos=Vtx(0,0,0);
-  Earth.rot=Quat(23.5,Vtx(1,0,0)); //give the Earth it's tilt
+  Earth.rot=Quat(23.5,Vtx(0,1,0))*Quat(90,Vtx(1,0,0)); //give the Earth it's tilt
   Earth.vel=Vtx(0,0,0);
-  Earth.rvel=Quat(360/24/60/60/24,Vtx(0,1,0)); //start the Earth spinning
+  Earth.rvel=Quat(360/24/60/60/24,Vtx(0,0,1)); //start the Earth spinning
   
 }
 
@@ -74,7 +76,7 @@ void initRocket(void)
   Rocket.radius=5;
   Rocket.pos=Vtx(Earth.radius+35786000,0,0);
   Rocket.rot=Quat(1,0,0,0);
-  Rocket.vel=Vtx(0,0,110680*4); //TODO: find a good value FIXME: use a config
+  Rocket.vel=Vtx(0,0,110680*3); //TODO: find a good value FIXME: use a config
   Rocket.rvel=Quat(1,0,0,0);
 }
 
@@ -82,11 +84,11 @@ void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
-  glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
   glRotatef(-camera.rot.vtx().y,0,1,0);
   glRotatef(-camera.rot.vtx().x,1,0,0);
   glRotatef(-camera.rot.vtx().z,0,0,1);
   glTranslatef(camera.pos.x,camera.pos.y,camera.pos.z);
+  glLightfv(GL_LIGHT0,GL_POSITION,sun_pos);
 
   glPushMatrix();
   glEnable(GL_DEPTH_TEST);
@@ -115,15 +117,11 @@ void display(void)
   glPopMatrix();
 
   glPushMatrix();
+  r=Earth.rot.getRotation();
   glTranslatef(-Rocket.pos.x,-Rocket.pos.y,-Rocket.pos.z);
-  glRotatef(Earth.rot.vtx().y,0,1,0);
-  glRotatef(Earth.rot.vtx().x,1,0,0);
-  glRotatef(Earth.rot.vtx().z,0,0,1);
+  glRotatef(r.w,r.x,r.y,r.z);
   glBindTexture(GL_TEXTURE_2D, earthTexture);
-  glColor3f(.25,.3,1);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
-  //  glDisable(GL_DEPTH_TEST);
-  //  glutSolidSphere(Earth.radius,36,18);
   gluSphere(earthMesh,Earth.radius,36,18);
   glPopMatrix();
 
@@ -143,7 +141,7 @@ void timer(int t)
   Earth.rot=Earth.rot.normalize()*Earth.rvel.normalize();
   Rocket.setThrust(throttle);
   glutPostRedisplay();
-  glutTimerFunc(1000/24,timer,1000/24);
+  glutTimerFunc(t,timer,t);
 }
 
 void special(int key, int x, int y)
@@ -223,6 +221,8 @@ int main(int argc, char **argv)
   initEarth();
   initRocket();
   glutKeyboardFunc(keyboard);
+    camera.rot.y-=2;
+    camera.pos=Vtx(0,0,Rocket.radius*zoom*-1).rotate(-camera.rot.y,Y).rotate(camera.rot.x,X);
   glutMainLoop();
   
   return 0;
