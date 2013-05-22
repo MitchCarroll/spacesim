@@ -2,3 +2,6 @@
 	 - added lighting (FIXME) and basic materials. everything is still
 	 - hardcoded. TODO: Add modularity
 20130425 - added Quat class, and split some of main.cpp into the Body class and header.
+20130522 - Earth is now textured, there is an attitude indicator (textured also), and a primitive texture
+	   loading routine. The Rocket is now in a proper orbit, albeit a highly eccentric one. TODO: check for
+	   accuracy. Lighting is basically correct now, and comes from the Sun, not the camera.
