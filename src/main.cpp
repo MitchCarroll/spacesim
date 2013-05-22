@@ -12,7 +12,7 @@ double zoom=2;
 Body Earth;
 Body Rocket;
 Body camera; //massless
-GLUquadricObj *earthMesh;
+GLUquadricObj *sphere;
 double throttle=100; //holds the throttle setting for the rocket
 
 GLfloat sun_pos[] = {1.0, 0.0, 0.0, 0.0};
@@ -21,46 +21,48 @@ GLfloat sun_dif[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat sun_spe[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat earth_dif[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat rocket_dif[] = {0.5, 0.5, 0.5, 1.0};
+GLfloat ball_dif[] = {0.7, 0.7, 0.7, 1.0};
+GLfloat ball_amb[] = {0.5, 0.5, 0.5, 1.0};
 
-GLubyte *etD;
-GLuint earthTexture=0;
-int etW=0, etH=0;
+GLuint earthTexture=0,ballTexture=0, rocketTexture=0;
 
-void loadTexture(const char *filename)
+void loadTexture(const char *filename, GLuint &tex)
 {
+  int w=0, h=0;
+  GLubyte *tD;
   ifstream infile;
   infile.open(filename);
-  infile >> etW >> etH;
-  GLubyte *temp=new GLubyte[etW*etH*3];
-  etD=new GLubyte[etW*etH*3];
-  for(int line=0;line<etH;line++) {
-    for(int byte=etW*3;byte>0;byte-=3) {
-      etD[line*etW*3+byte+2]=infile.get();
-      etD[line*etW*3+byte+1]=infile.get();
-      etD[line*etW*3+byte]=infile.get();
+  infile >> w >> h;
+  GLubyte *temp=new GLubyte[h*h*3];
+  tD=new GLubyte[w*h*3];
+  for(int line=0;line<h;line++) {
+    for(int byte=w*3;byte>0;byte-=3) {
+      tD[line*w*3+byte+2]=infile.get();
+      tD[line*w*3+byte+1]=infile.get();
+      tD[line*w*3+byte]=infile.get();
     }
   }
   infile.close();
-  cout << etW << "x" << etH << endl;
-  glGenTextures(1,&earthTexture);
-  glBindTexture(GL_TEXTURE_2D, earthTexture);
+  cout << w << "x" << h << endl;
+  glGenTextures(1,&tex);
+  glBindTexture(GL_TEXTURE_2D, tex);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
   gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGB,
-	       etW, etH, 
-	       GL_RGB, GL_UNSIGNED_BYTE, etD);
-  delete [] etD,temp;
+	       w, h, 
+	       GL_RGB, GL_UNSIGNED_BYTE, tD);
+  delete [] tD,temp;
 }
 
 void initEarth(void)
 {
-  loadTexture(DATADIR "earth.pnm");
-  earthMesh=gluNewQuadric();
-  gluQuadricDrawStyle(earthMesh, GLU_FILL);
-  gluQuadricTexture(earthMesh, GL_TRUE);
-  gluQuadricNormals(earthMesh, GLU_SMOOTH);
+  loadTexture(DATADIR "earth.pnm", earthTexture);
+  sphere=gluNewQuadric();
+  gluQuadricDrawStyle(sphere, GLU_FILL);
+  gluQuadricTexture(sphere, GL_TRUE);
+  gluQuadricNormals(sphere, GLU_SMOOTH);
   Earth.mass=5.9736E24;
   Earth.radius=6371E3;
   Earth.pos=Vtx(0,0,0);
@@ -72,6 +74,8 @@ void initEarth(void)
 
 void initRocket(void)
 {
+  loadTexture(DATADIR "rocket.pnm", rocketTexture);
+  loadTexture(DATADIR "8ball.pnm", ballTexture);
   Rocket.mass=1000;
   Rocket.radius=5;
   Rocket.pos=Vtx(Earth.radius+35786000,0,0);
@@ -83,6 +87,18 @@ void initRocket(void)
 void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+  Quat r=Rocket.rot.getRotation();
+
+  glLoadIdentity();
+  glTranslatef(0,-1.5,-2);
+  glRotatef(50,1,0,0);
+  glRotatef(-r.w,r.x,-r.z,r.y);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, ball_dif);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT, ball_amb);
+  glBindTexture(GL_TEXTURE_2D, ballTexture);
+  gluSphere(sphere,.25,36,18);
+
   glLoadIdentity();
   glRotatef(-camera.rot.vtx().y,0,1,0);
   glRotatef(-camera.rot.vtx().x,1,0,0);
@@ -92,13 +108,13 @@ void display(void)
 
   glPushMatrix();
   glEnable(GL_DEPTH_TEST);
+  glBindTexture(GL_TEXTURE_2D, rocketTexture);
   glBegin(GL_TRIANGLES);
   glVertex3f(0,0,0);
   glVertex3f(0,-1,0);
   glVertex3f(Rocket.thrust.x,Rocket.thrust.y,Rocket.thrust.z);
   glEnd();
   
-  Quat r=Rocket.rot.getRotation();
   glRotatef(r.w,r.x,r.y,r.z);
 
   glBegin(GL_TRIANGLES);
@@ -122,7 +138,7 @@ void display(void)
   glRotatef(r.w,r.x,r.y,r.z);
   glBindTexture(GL_TEXTURE_2D, earthTexture);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
-  gluSphere(earthMesh,Earth.radius,36,18);
+  gluSphere(sphere,Earth.radius,36,18);
   glPopMatrix();
 
   glutSwapBuffers();
