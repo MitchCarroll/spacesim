@@ -1,0 +1,182 @@
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-22
+
+    Update NEWS
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-22
+
+    added an attitude indicator, or "8-Ball"
+    
+    also made texture loading function more generic, and made a stab
+    at adding a texture to the spaceship. TODO: spaceship meshes.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-20
+
+    Corrected flipped texture, and Earth's spin.
+    
+    Again, though, these are completely temporary. Will probably
+    just incorporate someone else's texture loading library,
+    and will definitely be modularizing the code for Bodys more.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-18
+
+    cleaned up build tree some more
+    
+    these didn't get added in the last commit, apparently.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-18
+
+    Modified cleaned build tree.
+    
+    Removed all build files in src/ except for Makefile.am and
+    reconfigured the build tree.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-15
+
+    textured Earth
+    
+    added a modified PNM file (has magic number, comment, and
+    color depth info removed. TODO: better texture loading)
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-12
+
+    modified src/Makefile.am to provide DATADIR macro
+    
+    use DATADIR before filenames in src. e.g.:
+    infile.open(DATADIR "earth.png");
+    also cleaned up Makefile.am in other subdirs to point the
+    preprocessor to the correct include and link directories
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-10
+
+    updated README
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-10
+
+    fixed the distribution system so it now distributes and installs the data file
+    
+    the only data file right now is earth.png; it is in the data subdir,
+    and should get installed somewhere like /usr/local/share/space-simulator/
+    TODO: start migrating some of the functionality to config files and extensions
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-10
+
+    spaceship now orbits a bit more circularly
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-10
+
+    spacebar now prints altitude velocity x y z
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-09
+
+    added a line to instruments.txt
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-09
+
+    fixed autotools to build correctly when libvtx is not already installed
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-03
+
+    added a data folder with a texture for Earth in it, and some ideas for instruments.
+    
+    not sure how to use either yet. TODO!
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-02
+
+    left and right arrow keys now control roll, not yaw.
+    
+    eventually, the controls and all will need to be modularized into a
+    separate package so that you can have all your flight controls and
+    instruments change based on what vessel you are using. baby steps :)
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-02
+
+    first crack at using quaternions for rotation in the main program.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-02
+
+    added getRotation to Quat. returns a Quat containing the angle in degrees,
+    and the axis that correspond to the quaternion. suitable for glRotate.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-05-02
+
+    some cleanup on libquat, and added quaternion rotation.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-25
+
+    Update NEWS
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-25
+
+    Added some basic functionality to the Quat class. Split some of main.cpp into the Body class and header.
+    Rotation not yet implemented.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-25
+
+    Added nested quat library to handle quaternion rotation. fixed autotool and such.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-20
+
+    FIXED depth test and cull face. everything renders as it should now.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-20
+
+    made soem changes to the camera code. again.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-19
+
+    cleaning up code and trying to fix camera
+
+Merge: 26dd0d4 2e962cc
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-19
+
+    Merge branch 'master' of github.com:MitchCarroll/spacesim
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-19
+
+    Update README
+    
+    Description of, and musings on the project
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-18
+
+    *** empty log message ***
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-18
+
+    added lighting and basic materials (need to fix light rotation and depth test)
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-18
+
+    Update README
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-18
+
+    added Vtx*Vtx and crossProduct
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-18
+
+    Update NEWS
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2013-04-18
+
+    added camera controls, altitude output, and put ship in orbit
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2012-06-20
+
+    Added arrow key controls for rotation, and a timer func with physics
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2012-06-18
+
+    Added scene initialization code, and a simple display func to show earth and rocket.
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2012-06-17
+
+    changed vtl lib back to non-libtool library, and ran autoreconf
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2012-06-15
+
+    Fixed Vtx package. TODO: conditional build for packaged libvtx
+
+C. Mitch Carroll <c.mitch.carroll@gmail.com>	2012-06-14
+
+    Initial Commit
