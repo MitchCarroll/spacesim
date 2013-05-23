@@ -34,10 +34,14 @@ void quit()
 void loadTexture(const char *filename, GLuint &tex)
 {
   int w=0, h=0;
+  string comment;
   GLubyte *tD;
   ifstream infile;
   infile.open(filename);
+  getline(infile, comment); //Magic Number (should always be P6
+  getline(infile, comment); //comment (doesn't matter)
   infile >> w >> h;
+  getline(infile, comment); //color depth (should always be 255)
   GLubyte *temp=new GLubyte[h*h*3];
   tD=new GLubyte[w*h*3];
   for(int line=0;line<h;line++) {
