@@ -26,6 +26,11 @@ GLfloat ball_amb[] = {0.5, 0.5, 0.5, 1.0};
 
 GLuint earthTexture=0,ballTexture=0, rocketTexture=0;
 
+void quit()
+{
+  exit(0);
+}
+
 void loadTexture(const char *filename, GLuint &tex)
 {
   int w=0, h=0;
@@ -92,6 +97,17 @@ void display(void)
 
   glLoadIdentity();
   glTranslatef(0,-1.5,-2);
+  glDisable(GL_TEXTURE_2D);
+  //  glDisable(GL_CULL_FACE);
+  glBegin(GL_TRIANGLE_STRIP);
+  glVertex3f(2,-2,1);
+  glVertex3f(1,-1,1);
+  glVertex3f(-1,-2,1);
+  glVertex3f(-1,-1,1);
+  glVertex3f(-2,-2,1);
+  glEnd();
+  glEnable(GL_TEXTURE_2D);
+  //  glEnable(GL_CULL_FACE);
   glRotatef(50,1,0,0);
   glRotatef(-r.w,r.x,-r.z,r.y);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, ball_dif);
@@ -116,21 +132,18 @@ void display(void)
   
   glRotatef(r.w,r.x,r.y,r.z);
 
-  glBegin(GL_TRIANGLES);
-  glTexCoord2f(0,0);
-  glVertex3f(0,0,0);
-  glTexCoord2f(1,0);
-  glVertex3f(0,1.25,-1);
-  glTexCoord2f(1,1);
-  glVertex3f(0,0,4);
-  glEnd();
-  
-  glColor3f(.7,.7,.7);
-  glBindTexture(GL_TEXTURE_2D, rocketTexture);
+  glBindTexture(GL_TEXTURE_2D, rocketTexture);  
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, rocket_dif);
   glScalef(1,.25,1);
+  glRotatef(180,0,0,1);
   //  glutSolidCone(2.5,5,10,5);
   gluCylinder(sphere,2.5,0,5,10,5);
+  glScalef(1,1,.25);
+  gluSphere(sphere, 2.5, 10, 10);
+  glScalef(0.01,1,3);
+  glRotatef(-9,1,0,0);
+  glTranslatef(0,-.8,0);
+  gluCylinder(sphere,4,0,5,10,5);
   glPopMatrix();
 
   glPushMatrix();
@@ -154,8 +167,8 @@ void timer(int t)
     Rocket.rvel=Quat();
   }
   Rocket.pos=Rocket.pos+Rocket.vel/24;
-  Rocket.rot=Rocket.rot.normalize()*Rocket.rvel.normalize();
-  Earth.rot=Earth.rot.normalize()*Earth.rvel.normalize();
+  Rocket.rot=Rocket.rvel.normalize()*Rocket.rot.normalize();
+  Earth.rot=Earth.rvel.normalize()*Earth.rot.normalize();
   Rocket.setThrust(throttle);
   glutPostRedisplay();
   glutTimerFunc(t,timer,t);
@@ -165,16 +178,16 @@ void special(int key, int x, int y)
 {
   switch(key){
   case GLUT_KEY_LEFT:
-    Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(0,0,1));
+    Rocket.rvel=Quat(-.1,Vtx(0,0,1))*Rocket.rvel;
     break;
   case GLUT_KEY_RIGHT:
-    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(0,0,1));
+    Rocket.rvel=Quat(.1,Vtx(0,0,1))*Rocket.rvel;
     break;
   case GLUT_KEY_UP:
-    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(1,0,0));
+    Rocket.rvel=Quat(.1,Vtx(1,0,0))*Rocket.rvel;
     break;
   case GLUT_KEY_DOWN:
-    Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(1,0,0));
+    Rocket.rvel=Quat(-.1,Vtx(1,0,0))*Rocket.rvel;
     break;
   default:
     break;
@@ -184,11 +197,14 @@ void special(int key, int x, int y)
 void keyboard(unsigned char key, int x, int y)
 {
   switch(key){
+  case 27:
+    quit();
+    break;
   case ',':
-    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(0,1,0));
+    Rocket.rvel=Quat(.1,Vtx(0,1,0))*Rocket.rvel;
     break;
   case '.':
-    Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(0,1,0));
+    Rocket.rvel=Quat(-.1,Vtx(0,1,0))*Rocket.rvel;
     break;
   case 'a':
     camera.rot.y-=2;
