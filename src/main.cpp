@@ -16,7 +16,7 @@ GLUquadricObj *sphere;
 double throttle=100; //holds the throttle setting for the rocket
 
 GLfloat sun_pos[] = {1.0, 0.0, 0.0, 0.0};
-GLfloat sun_amb[] = {0.2, 0.2, 0.2, 1.0};
+GLfloat sun_amb[] = {0.1, 0.1, 0.1, 1.0};
 GLfloat sun_dif[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat sun_spe[] = {1.0, 1.0, 1.0, 1.0};
 GLfloat earth_dif[] = {1.0, 1.0, 1.0, 1.0};
@@ -38,8 +38,8 @@ void loadTexture(const char *filename, GLuint &tex)
   for(int line=0;line<h;line++) {
     for(int byte=w*3;byte>0;byte-=3) {
       tD[line*w*3+byte+2]=infile.get();
-      tD[line*w*3+byte+1]=infile.get();
       tD[line*w*3+byte]=infile.get();
+      tD[line*w*3+byte+1]=infile.get();
     }
   }
   infile.close();
@@ -108,7 +108,6 @@ void display(void)
 
   glPushMatrix();
   glEnable(GL_DEPTH_TEST);
-  glBindTexture(GL_TEXTURE_2D, rocketTexture);
   glBegin(GL_TRIANGLES);
   glVertex3f(0,0,0);
   glVertex3f(0,-1,0);
@@ -127,9 +126,11 @@ void display(void)
   glEnd();
   
   glColor3f(.7,.7,.7);
+  glBindTexture(GL_TEXTURE_2D, rocketTexture);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, rocket_dif);
   glScalef(1,.25,1);
-  glutSolidCone(2.5,5,10,5);
+  //  glutSolidCone(2.5,5,10,5);
+  gluCylinder(sphere,2.5,0,5,10,5);
   glPopMatrix();
 
   glPushMatrix();
@@ -164,16 +165,16 @@ void special(int key, int x, int y)
 {
   switch(key){
   case GLUT_KEY_LEFT:
-    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(0,0,1));
-    break;
-  case GLUT_KEY_RIGHT:
     Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(0,0,1));
     break;
+  case GLUT_KEY_RIGHT:
+    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(0,0,1));
+    break;
   case GLUT_KEY_UP:
-    Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(1,0,0));
+    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(1,0,0));
     break;
   case GLUT_KEY_DOWN:
-    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(1,0,0));
+    Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(1,0,0));
     break;
   default:
     break;
@@ -183,6 +184,12 @@ void special(int key, int x, int y)
 void keyboard(unsigned char key, int x, int y)
 {
   switch(key){
+  case ',':
+    Rocket.rvel=Rocket.rvel*Quat(.1,Vtx(0,1,0));
+    break;
+  case '.':
+    Rocket.rvel=Rocket.rvel*Quat(-.1,Vtx(0,1,0));
+    break;
   case 'a':
     camera.rot.y-=2;
     camera.pos=Vtx(0,0,Rocket.radius*zoom*-1).rotate(-camera.rot.y,Y).rotate(camera.rot.x,X);
