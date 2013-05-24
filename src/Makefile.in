@@ -109,6 +109,8 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EXEEXT = @EXEEXT@
+GUILE_CFLAGS = @GUILE_CFLAGS@
+GUILE_LIBS = @GUILE_LIBS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -129,6 +131,9 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PKG_CONFIG = @PKG_CONFIG@
+PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
+PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -177,10 +182,10 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = -DDATADIR='"$(pkgdatadir)/"'
+AM_CPPFLAGS = -DDATADIR='"$(pkgdatadir)/"' @GUILE_CFLAGS@
 AM_CXXFLAGS = -I$(top_builddir) -I$(top_builddir)/src -I$(top_builddir)/vtx -I$(top_builddir)/quat
 spacesim_SOURCES = main.cpp body.cpp body.h
-spacesim_LDADD = $(top_builddir)/vtx/libvtx.a $(top_builddir)/quat/libquat.a $(AM_LDFLAGS)
+spacesim_LDADD = $(top_builddir)/vtx/libvtx.a $(top_builddir)/quat/libquat.a @GUILE_LIBS@ $(AM_LDFLAGS)
 spacesim_LIBS = "-lglut -lGLU -lGL"
 all: all-am
 
