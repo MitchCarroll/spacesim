@@ -1,25 +1,55 @@
-I love Orbiter (2006, 2010, I love them both), but they both suck at running with Wine, and don't run natively in 
-anything other than Windows. This is especialy sad, because it seems to me that many of the people that would enjoy 
+I love Orbiter (2006, 2010, I love them both), but they both suck at running 
+with Wine, and don't run natively in anything other than Windows. This is 
+especially sad, because it seems to me that many of the people that would enjoy
 Linux, and those that would enjoy Orbiter are the same people.
 
-Anyway, I don't know if i could ever write the "next Orbiter", but I'm going to take a stab at writing my own take on 
-space simulation.
+Anyway, I don't know if i could ever write the "next Orbiter", but I'm going to
+take a stab at writing my own take on space simulation.
 
-I'm also sick and tired of "space simulators" that simulate space itself, but not much more, or that gives you
-'newtonian' motion, but with no gravity! Probably THE WORST give you non-inertial movement, no gravity, no physics.
+I'm also sick and tired of "space simulators" that simulate space itself, but 
+not much more, or that gives you 'newtonian' motion, but with no gravity! 
+Probably THE WORST give you non-inertial movement, no gravity, no physics.
 
 Elite/OOlite is still pretty cool, though..
 
-I'd like to implement multiplayer capability as well. I mean, who DOESN'T want a persistant, realistic MMO space sim?
+I'd like to implement multiplayer capability as well. I mean, who DOESN'T want 
+a persistant, realistic MMO space sim?
 
-Furthermore, in honor of Robert A. Heinlein, I'd like to provide some sort of interface for such things as sextants, 
-astrolabes, slide-rules plotting tables, etc. That way you can have your own classic sci-fi style adventures in the 
-style of The Rolling Stones, Rocketship Galileo, or maybe even Starman Jones. Most likely, this will be in the form of 
-an interface with pyNomo or some such.
+Furthermore, in honor of Robert A. Heinlein, I'd like to provide some sort of 
+interface for such things as sextants, astrolabes, slide-rules plotting tables,
+etc. That way you can have your own classic sci-fi style adventures in the 
+style of The Rolling Stones, Rocketship Galileo, or maybe even Starman Jones. 
+Most likely, this will be in the form of an interface with pyNomo or some such.
 
-At the moment, wasd -> camera controls(absolute), arrow keys->rotate spaceship, spacebar->print current altitude, velocity (I know, I know), and 
-coordinates to terminal 
+At the moment, wasd -> camera controls(absolute), 
+arrow keys , . -> rotate spaceship, 
+spacebar -> print current altitude, velocity (I know, I know), and coordinates 
+to terminal. 
 
-I am trying to get the basic features all working, and then I'm going to clean up and modularize the code, and build an
-API. Considering using Guile or Python as the extension language. For 3D models, I still need to decide on a file format
-that I can read into the program easily, but without a bunch of overhead (like .blend). must play nicely with Blender.
+I am trying to get the basic features all working, and then I'm going to clean 
+up and modularize the code, and build an API. Using Guile as the extension 
+language, but may use Python for GUI. For 3D models, I still need to decide on 
+a file format, though it may be entirely procedural. That I can read into the 
+program easily, but without a bunch of overhead (like .blend). must play nicely
+with Blender.
+
+A spacecraft (or pretty much anything else to be simulated) should be fully 
+described by a Guile script. The API will provide procedures and such to make
+such things as rocket motors, propellant tanks, aerodynamic surfaces, control
+jets, docking ports, reactors, radiators, pipes and wires, gyros and precession
+wheels, etc. Generating a component creates a mesh for it, as well as physical
+properties like mass, fluid capacity, drag coefficient, etc. It will also
+create all the necessary hooks for simulation, and procedures for control 
+input, and instrument output (e.g.: engine temperature reading, cabin pressure,
+gyro angles, etc for instrument output. Throttle setting, RCS impulses, docking
+port manipulation, engine gimbal angle, structural decoupling, etc. for control
+inputs). 
+Once all these functions are exposed, they can all be tied into each other,
+and hooked into the interface through API hooks and callbacks. The API will
+provide hooks and callbacks to create instrument and control panels. 
+This way, it is easy enough for anyone to create spacecraft and such without
+requiring any special tools or skills with 3D editors and such. It also ensures
+that all user-created spacecraft and such follow standards, and are therefore
+realistic, and compatible with the simulator, and all other spacecraft. This 
+way, in a multi-user environment, all vessels are sane, and all players have to
+obey the same laws of physics.
