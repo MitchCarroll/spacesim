@@ -12,7 +12,7 @@ double zoom=2;
 Body Earth;
 Body Rocket;
 Body camera; //massless
-GLUquadricObj *sphere;
+GLUquadricObj *quadric;
 double throttle=100; //holds the throttle setting for the rocket
 
 GLfloat sun_pos[] = {1.0, 0.0, 0.0, 0.0};
@@ -68,10 +68,6 @@ void loadTexture(const char *filename, GLuint &tex)
 void initEarth(void)
 {
   loadTexture(DATADIR "earth.pnm", earthTexture);
-  sphere=gluNewQuadric();
-  gluQuadricDrawStyle(sphere, GLU_FILL);
-  gluQuadricTexture(sphere, GL_TRUE);
-  gluQuadricNormals(sphere, GLU_SMOOTH);
   Earth.mass=5.9736E24;
   Earth.radius=6371E3;
   Earth.pos=Vtx(0,0,0);
@@ -117,7 +113,7 @@ void display(void)
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, ball_dif);
   glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT, ball_amb);
   glBindTexture(GL_TEXTURE_2D, ballTexture);
-  gluSphere(sphere,.25,36,18);
+  gluSphere(quadric,.25,36,18);
 
   glLoadIdentity();
   glRotatef(-camera.rot.vtx().y,0,1,0);
@@ -140,14 +136,13 @@ void display(void)
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, rocket_dif);
   glScalef(1,.25,1);
   glRotatef(180,0,0,1);
-  //  glutSolidCone(2.5,5,10,5);
-  gluCylinder(sphere,2.5,0,5,10,5);
+  gluCylinder(quadric,2.5,0,5,10,5);
   glScalef(1,1,.25);
-  gluSphere(sphere, 2.5, 10, 10);
+  gluSphere(quadric, 2.5, 10, 10);
   glScalef(0.01,1,3);
   glRotatef(-9,1,0,0);
   glTranslatef(0,-.8,0);
-  gluCylinder(sphere,4,0,5,10,5);
+  gluCylinder(quadric,4,0,5,10,5);
   glPopMatrix();
 
   glPushMatrix();
@@ -156,7 +151,7 @@ void display(void)
   glRotatef(r.w,r.x,r.y,r.z);
   glBindTexture(GL_TEXTURE_2D, earthTexture);
   glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE, earth_dif);
-  gluSphere(sphere,Earth.radius,36,18);
+  gluSphere(quadric,Earth.radius,36,18);
   glPopMatrix();
 
   glutSwapBuffers();
@@ -261,6 +256,10 @@ int main(int argc, char **argv)
   glutDisplayFunc(display);
   glutTimerFunc(1000/24,timer,1000/24);
   glutSpecialFunc(special);
+  quadric=gluNewQuadric();
+  gluQuadricDrawStyle(quadric, GLU_FILL);
+  gluQuadricTexture(quadric, GL_TRUE);
+  gluQuadricNormals(quadric, GLU_SMOOTH);
   initEarth();
   initRocket();
   glutKeyboardFunc(keyboard);
