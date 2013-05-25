@@ -1,6 +1,11 @@
-*.o
-*.a
-*.o
-*.la
 *~
 *#
+*.o
+*.a
+config.h
+config.log
+config.status
+Makefile
+stamp-h1
+.deps
+.deps/*
