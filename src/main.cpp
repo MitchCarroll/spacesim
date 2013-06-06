@@ -8,7 +8,7 @@
 #include <body.h>
 using namespace std;
 
-class SpaceShip:public Body	
+class SpaceShip:public Body
 //TODO: create an all inclusive class for 
 // spacecraft, and expose its particulars to Guile (e.g.: make-craft, set-mass)
 {
@@ -239,9 +239,9 @@ keyboard (unsigned char key, int x, int y)
       camera.x += 2;
       break;
     case ' ':
-      cout << Rocket.altitude (Earth) << " " << Rocket.vel.
-	magnitude () << " " << Rocket.pos.x << " " << Rocket.pos.
-	y << " " << Rocket.pos.z << endl;
+      cout << Rocket.altitude (Earth) << " " << Rocket.
+	vel.magnitude () << " " << Rocket.pos.x << " " << Rocket.
+	pos.y << " " << Rocket.pos.z << endl;
     default:
       break;
     }
