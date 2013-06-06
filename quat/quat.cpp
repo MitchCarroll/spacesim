@@ -1,115 +1,147 @@
 #include <quat.h>
 using namespace std;
 
-Quat::Quat()
+Quat::Quat ()
 {
-  w=1;
-  x=0;
-  y=0;
-  z=0;
+  w = 1;
+  x = 0;
+  y = 0;
+  z = 0;
 }
 
-Quat::Quat(double angle, Vtx axis)
+Quat::Quat (double angle, Vtx axis)
 {
-  w=cos(DEG2RAD(angle)/2);
-  double s=sin(DEG2RAD(angle)/2);
-  Vtx v=axis.normalize()*s;
-  x=v.x;
-  y=v.y;
-  z=v.z;
+  Quat q;
+  q.w = cos (DEG2RAD (angle) / 2);
+  double s = sin (DEG2RAD (angle) / 2);
+  Vtx n = axis.normalize () * s;
+  q.x = n.x;
+  q.y = n.y;
+  q.z = n.z;
+  //  q=q.normalize();
+  w = q.w;
+  x = q.x;
+  y = q.y;
+  z = q.z;
 }
 
-Quat::Quat(Vtx v)
+Quat::Quat (Vtx v)
 {
-  w=0;
-  x=v.x;
-  y=v.y;
-  z=v.z;
+  Vtx n = v.normalize ();
+  w = 0;
+  x = n.x;
+  y = n.y;
+  z = n.z;
 }
 
-Quat::Quat(double vw, double vx, double vy, double vz)
+Quat::Quat (double vw, double vx, double vy, double vz)
 {
-  w=vw;
-  x=vx;
-  y=vy;
-  z=vz;
+  Quat q (vw, Vtx (vx, vy, vz));
+  w = q.w;
+  x = q.x;
+  y = q.y;
+  z = q.z;
 }
 
-Quat::~Quat(){}
-
-double Quat::magnitude()
+Quat::~Quat ()
 {
-  return sqrt(w*w+x*x+y*y+z*z);
 }
 
-Quat Quat::normalize()
+
+
+double
+Quat::magnitude ()
 {
-  double m=magnitude();
-  return Quat(w/m,x/m,y/m,z/m);
+  return sqrt (w * w + x * x + y * y + z * z);
 }
 
-Quat Quat::operator=(Vtx v)
+Quat
+Quat::normalize ()
 {
-  return Quat(0,v.x,v.y,v.z);
+  double m = magnitude ();
+  Quat q;
+  q.w = w / m;
+  q.x = x / m;
+  q.y = y / m;
+  q.z = z / m;
+  return q;
 }
 
-Vtx Quat::vtx()
+Quat
+Quat::operator= (Vtx v)
 {
-  return Vtx(x,y,z);
+  return Quat (v);
 }
 
-Quat Quat::multiply(Quat q)
+
+Quat
+Quat::multiply (Quat q)
 {
   Quat r;
-  r.w = w*q.w - x*q.x - y*q.y - z*q.z;
-  r.x = w*q.x + x*q.w + y*q.z + z*q.y;
-  r.y = w*q.y - x*q.z + y*q.w + z*q.x;
-  r.z = w*q.z + x*q.y - y*q.x + z*q.w;
+  r.w = w * q.w - x * q.x - y * q.y - z * q.z;
+  r.x = w * q.x + x * q.w + y * q.z + z * q.y;
+  r.y = w * q.y - x * q.z + y * q.w + z * q.x;
+  r.z = w * q.z + x * q.y - y * q.x + z * q.w;
+
+  //return r;
+  return r.normalize ();	//should normalize?
+}
+
+Quat
+Quat::operator* (Quat q)
+{
+  return multiply (q);
+}
+
+Quat
+Quat::operator* (Vtx v)
+{
+  return multiply (Quat (v));
+}
+
+Quat
+Quat::operator* (double s)
+{
+  Quat r (w, x, y, z);
+  r.w *= s;
+  r.x *= s;
+  r.y *= s;
+  r.z *= s;
   return r;
+  //  return multiply(Quat(s,0,0,0)); //more elegant / accurate?
 }
 
-Quat Quat::operator*(Quat q)
+Vtx
+Quat::rotate (Vtx v)
+{				//rotate a 3D vector by a quaternion
+  Quat q (w, -x, -y, -z);	//q^(-1)
+  Quat r = this->multiply (Quat (v));	//qv
+  r = r.multiply (q);		//(qv)q^(-1)
+  return Vtx (r.x, r.y, r.z);	//is correct?
+}
+
+double
+Quat::angle ()			//in degrees
 {
-  return multiply(q);
+  return Acos (w) * 2.0;
 }
 
-Quat Quat::operator*(Vtx v)
+Vtx
+Quat::axis ()
 {
-  return Quat(0,x*v.x,y*v.y,z*v.z);
-}
-
-Quat Quat::operator*(double s)
-{
-  Quat r(w,x,y,z);
-  r.w*=s;
-  r.x*=s;
-  r.y*=s;
-  r.z*=s;
-  return r; 
-}
-
-Vtx Quat::rotate(Vtx v)
-{ //rotate a 3D vector by a quaternion
-  Quat q(w,-x,-y,-z); //q^(-1)
-  Quat r=this->multiply(Quat(v)); //qv
-  r=r.multiply(q); //(qv)q^(-1)
-  return q.vtx(); //is correct?
-}
-
-Quat Quat::getRotation()
-{
-  Quat q=this->normalize();
-  Quat r;
-  r.w=Acos(q.w)*2;
-  double s=sqrt(1-q.w*q.w);
-  if(s<0.001) {
-    r.x=q.x;
-    r.y=q.y;
-    r.z=q.z;
-  } else {
-    r.x=q.x/s;
-    r.y=q.y/s;
-    r.z=q.z/s;
-  }
-  return r;
+  Vtx r;
+  double s = sqrt (1.0 - w * w);
+  if (s == 0.0)
+    {				//eh?
+      r.x = x;
+      r.y = y;
+      r.z = z;
+    }
+  else
+    {
+      r.x = x / s;
+      r.y = y / s;
+      r.z = z / s;
+    }
+  return r.normalize ();
 }
