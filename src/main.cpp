@@ -132,7 +132,7 @@ display (void)
   glLoadIdentity ();
   Vtx r = Rocket.rot.axis ();
   Quat e = Earth.rot.axis ();
-  Vtx c = Vtx (0, 0, -1).rotate (camera.y, Y).rotate (camera.x,
+  Vtx c = Vtx (0, 0, -1).rotate (camera.y, Y).rotate (-camera.x,
 						      X) * Rocket.radius *
     zoom;
 
@@ -239,9 +239,9 @@ keyboard (unsigned char key, int x, int y)
       camera.x += 2;
       break;
     case ' ':
-      cout << Rocket.altitude (Earth) << " " << Rocket.
-	vel.magnitude () << " " << Rocket.pos.x << " " << Rocket.
-	pos.y << " " << Rocket.pos.z << endl;
+      cout << Rocket.altitude (Earth) << " " << Rocket.vel.
+	magnitude () << " " << Rocket.pos.x << " " << Rocket.pos.
+	y << " " << Rocket.pos.z << endl;
     default:
       break;
     }

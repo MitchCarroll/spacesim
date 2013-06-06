@@ -30,44 +30,37 @@ Vtx::distance (Vtx v)
   return Vtx (v.x - x, v.y - y, v.z - z).magnitude ();
 }
 
-Vtx
-Vtx::direction (Vtx v)
+Vtx Vtx::direction (Vtx v)
 {
   return Vtx (v.x - x, v.y - y, v.z - z).normalize ();
 }
 
-Vtx
-Vtx::translate (Vtx v)
+Vtx Vtx::translate (Vtx v)
 {
   return Vtx (x + v.x, y + v.y, z + v.z);
 }
 
-Vtx
-Vtx::scale (double f)
+Vtx Vtx::scale (double f)
 {
   return Vtx (x * f, y * f, z * f);
 }
 
-Vtx
-Vtx::scale (Vtx v)
+Vtx Vtx::scale (Vtx v)
 {
   return Vtx (x * v.x, y * v.y, z * v.z);
 }
 
-Vtx
-Vtx::normalize (void)
+Vtx Vtx::normalize (void)
 {
   return scale (1.0 / magnitude ());
 }
 
-Vtx
-Vtx::colorize (void)		//convert the given vector into an RGB color
+Vtx Vtx::colorize (void)	//convert the given vector into an RGB color
 {				//suitable for OpenGL DOT3 normalmapping
   return normalize ().scale (Vtx (.5, -.5, .5)).translate (Vtx (.5, .5, .5));
 }
 
-Vtx
-Vtx::rotate (double angle, AXIS axis)
+Vtx Vtx::rotate (double angle, AXIS axis)
 {
   angle = DEG2RAD (angle);
   switch (axis)
@@ -87,38 +80,32 @@ Vtx::rotate (double angle, AXIS axis)
     }
 }
 
-Vtx
-Vtx::crossProduct (Vtx v)
+Vtx Vtx::crossProduct (Vtx v)
 {
   return Vtx (y * v.z - v.y * z, z * v.x - v.z * x, x * v.y - v.x * y);
 }
 
-Vtx
-Vtx::operator+ (Vtx v)
+Vtx Vtx::operator+ (Vtx v)
 {
   return translate (v);
 }
 
-Vtx
-Vtx::operator- (Vtx v)
+Vtx Vtx::operator- (Vtx v)
 {
   return translate (v.scale (-1));
 }
 
-Vtx
-Vtx::operator* (double d)
+Vtx Vtx::operator* (double d)
 {
   return scale (d);
 }
 
-Vtx
-Vtx::operator* (Vtx v)
+Vtx Vtx::operator* (Vtx v)
 {
   return scale (v);
 }
 
-Vtx
-Vtx::operator/ (double d)
+Vtx Vtx::operator/ (double d)
 {
   return Vtx (x / d, y / d, z / d);
 }
