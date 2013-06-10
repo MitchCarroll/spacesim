@@ -41,7 +41,7 @@ double zoom = 2;
 
 Body Earth;
 SpaceShip Rocket;
-Vtx camera;			//camera angle
+Quat camera;			//camera angle
 
 double throttle = 100;		//holds the throttle setting for the rocket
 
@@ -90,8 +90,8 @@ loadTexture (const char *filename, GLuint & tex)
   glBindTexture (GL_TEXTURE_2D, tex);
   glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glTexParameterf (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-  glTexParameterf (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glTexParameterf (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameterf (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   gluBuild2DMipmaps (GL_TEXTURE_2D, GL_RGB,
 		     w, h, GL_RGB, GL_UNSIGNED_BYTE, tD);
   delete[]tD, temp;
@@ -132,10 +132,8 @@ display (void)
   glLoadIdentity ();
   Vtx r = Rocket.rot.axis ();
   Quat e = Earth.rot.axis ();
-  Vtx c = Vtx (0, 0, -1).rotate (camera.y, Y).rotate (-camera.x,
-						      X) * Rocket.radius *
-    zoom;
-
+  Vtx c = camera.rotate (Vtx (0, 0, -1)) * Rocket.radius * zoom;
+  
   //draw 8-ball
   //TODO: expose an API, and leave this to the interface and extension code
   glPushMatrix ();
@@ -149,10 +147,13 @@ display (void)
   glPopMatrix ();
 
   //apply camera transformation
-  glRotatef (camera.z, 1, 0, 0);
-  glRotatef (camera.y, 0, 1, 0);
-  glRotatef (camera.x, 0, 0, 1);
-  glTranslatef (c.x, c.y, c.z);
+  glRotatef (-camera.angle (), 
+	     camera.axis ().x,
+	     camera.axis ().y,
+	     camera.axis ().z);
+  glTranslatef (c.x, 
+		c.y, 
+		c.z); //(c.x, c.y, c.z);
   glLightfv (GL_LIGHT0, GL_POSITION, sun_pos);
 
   //draw rocket
@@ -230,16 +231,16 @@ keyboard (unsigned char key, int x, int y)
       break;
       //////camera rotation
     case 'a':
-      camera.y -= 2;
+      camera=Quat(-2,0,1,0)*camera;
       break;
     case 'd':
-      camera.y += 2;
+      camera=Quat(2,0,1,0)*camera;
       break;
     case 'w':
-      camera.x -= 2;
+      camera=Quat(-2,1,0,0)*camera;
       break;
     case 's':
-      camera.x += 2;
+      camera=Quat(2,1,0,0)*camera;
       break;
     case ' ':
       cout << Rocket.altitude (Earth) << " " << Rocket.
@@ -279,8 +280,8 @@ main (int argc, char **argv)
   glutSpecialFunc (special);
   initEarth ();
   initRocket ();
+  camera = Quat (.1, 0, 0, 1);
   glutKeyboardFunc (keyboard);
-  camera.y -= 2;
   glutMainLoop ();
   return 0;
 }
