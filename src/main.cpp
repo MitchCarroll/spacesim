@@ -118,7 +118,7 @@ initRocket (void)
   Rocket.mass = 1000;
   Rocket.radius = 5;
   Rocket.pos = Earth.pos + Vtx (Earth.radius * 1.0470219435736676, 0, 0);	//TODO: Find a better value
-  Rocket.vel = Vtx (0, 0, 790819.3046712915*1.5); //TODO: find a good value 
+  Rocket.vel = Vtx (0, 0, 790819.3046712915 * 1.5);	//TODO: find a good value 
   //FIXME: use a config 
   //TODO: make a function to determine circular speed or something
   Rocket.rvel = 0.000001;
@@ -149,8 +149,9 @@ display (void)
   glPopMatrix ();
 
   //apply camera transformation
+  glRotatef (camera.z, 1, 0, 0);
   glRotatef (camera.y, 0, 1, 0);
-  glRotatef (camera.x, 1, 0, 0);
+  glRotatef (camera.x, 0, 0, 1);
   glTranslatef (c.x, c.y, c.z);
   glLightfv (GL_LIGHT0, GL_POSITION, sun_pos);
 
@@ -241,9 +242,9 @@ keyboard (unsigned char key, int x, int y)
       camera.x += 2;
       break;
     case ' ':
-      cout << Rocket.altitude (Earth) << " " << Rocket.vel.
-	magnitude () << " " << Rocket.pos.x << " " << Rocket.pos.
-	y << " " << Rocket.pos.z << endl;
+      cout << Rocket.altitude (Earth) << " " << Rocket.
+	vel.magnitude () << " " << Rocket.pos.x << " " << Rocket.
+	pos.y << " " << Rocket.pos.z << endl;
     default:
       break;
     }
