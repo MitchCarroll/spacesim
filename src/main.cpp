@@ -46,12 +46,12 @@ Vtx camera;			//camera angle
 double throttle = 100;		//holds the throttle setting for the rocket
 
 GLfloat sun_pos[] = { 1.0, 0.0, 0.0, 0.0 };
-GLfloat sun_amb[] = { 0.1, 0.1, 0.1, 1.0 };
+GLfloat sun_amb[] = { 0.01, 0.01, 0.01, 1.0 };
 GLfloat sun_dif[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat sun_spe[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat rocket_dif[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat ball_dif[] = { 0.7, 0.7, 0.7, 1.0 };
-GLfloat ball_amb[] = { 0.5, 0.5, 0.5, 1.0 };
+GLfloat ball_amb[] = { 0.75, 0.75, 0.75, 1.0 };
 
 GLuint ballTexture = 0;
 
@@ -117,8 +117,8 @@ initRocket (void)
   loadTexture (DATADIR "8ball.pnm", ballTexture);
   Rocket.mass = 1000;
   Rocket.radius = 5;
-  Rocket.pos = Vtx (Earth.radius + 35786000, 0, 0);	//TODO: Find a better value
-  Rocket.vel = Vtx (0, 0, 110680 * 3);	//TODO: find a good value 
+  Rocket.pos = Earth.pos + Vtx (Earth.radius * 1.0470219435736676, 0, 0);	//TODO: Find a better value
+  Rocket.vel = Vtx (0, 0, 790819.3046712915*1.5); //TODO: find a good value 
   //FIXME: use a config 
   //TODO: make a function to determine circular speed or something
   Rocket.rvel = 0.000001;
@@ -152,6 +152,7 @@ display (void)
   glRotatef (camera.y, 0, 1, 0);
   glRotatef (camera.x, 1, 0, 0);
   glTranslatef (c.x, c.y, c.z);
+  glLightfv (GL_LIGHT0, GL_POSITION, sun_pos);
 
   //draw rocket
   Rocket.display ();
@@ -200,7 +201,8 @@ special (int key, int x, int y)
     case GLUT_KEY_UP:		//pitch down
       rv = rv * Quat (.1, 1, 0, 0);
       break;
-    case GLUT_KEY_DOWN:	//pitch up ///friends don't let friends use inverted controls
+    case GLUT_KEY_DOWN:	//pitch up 
+      ///friends don't let friends use inverted controls
       rv = rv * Quat (-.1, 1, 0, 0);
       break;
     default:
@@ -220,7 +222,7 @@ keyboard (unsigned char key, int x, int y)
       quit ();
       break;
     case ',':			//yaw left
-      rv = rv * Quat (-.1, 0, 1, 0);
+      rv = rv * Quat (.1, 0, 1, 0);
       break;
     case '.':			//yaw right
       rv = rv * Quat (-.1, 0, 1, 0);
