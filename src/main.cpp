@@ -133,6 +133,7 @@ display (void)
   Vtx r = Rocket.rot.axis ();
   Quat e = Earth.rot.axis ();
   Vtx c = camera.rotate (Vtx (0, 0, -1)) * Rocket.radius * zoom;
+  Vtx u = camera.rotate (Vtx (0, 1, 0));
   
   //draw 8-ball
   //TODO: expose an API, and leave this to the interface and extension code
@@ -147,13 +148,9 @@ display (void)
   glPopMatrix ();
 
   //apply camera transformation
-  glRotatef (-camera.angle (), 
-	     camera.axis ().x,
-	     camera.axis ().y,
-	     camera.axis ().z);
-  glTranslatef (c.x, 
-		c.y, 
-		c.z); //(c.x, c.y, c.z);
+  gluLookAt (c.x, c.y, c.z,
+	     0, 0, 0,
+	     u.x, u.y, u.z);
   glLightfv (GL_LIGHT0, GL_POSITION, sun_pos);
 
   //draw rocket
