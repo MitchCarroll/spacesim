@@ -9,3 +9,4 @@
 messiness. most things function properly now. still need to figure out why
 the thrust vector isn't rotating properly. Applied GNU indent style to all
 source files.
+20130610 - using gluLookAt() for camera transformation now.
