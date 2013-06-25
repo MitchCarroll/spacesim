@@ -5,8 +5,9 @@
 20130522 - Earth is now textured, there is an attitude indicator (textured also), and a primitive texture
 	   loading routine. The Rocket is now in a proper orbit, albeit a highly eccentric one. TODO: check for
 	   accuracy. Lighting is basically correct now, and comes from the Sun, not the camera.
-20130606 - Major code refactor. Whole bunch of changes, MOSTLY to decrease
-messiness. most things function properly now. still need to figure out why
-the thrust vector isn't rotating properly. Applied GNU indent style to all
-source files.
+20130606 - Major code refactor. Whole bunch of changes, MOSTLY to decrease messiness. most things function properly 
+	   now. still need to figure out why the thrust vector isn't rotating properly. Applied GNU indent style to 
+	   all source files.
 20130610 - using gluLookAt() for camera transformation now.
+20130625 - using SWIG to generate Guile bindings. (SWIG doesn't seem to play well with Guile 2.0 yet, so I'm sticking
+	   to 1.8) Not actually implemented yet. Still knocking together an interface standard. see the README
