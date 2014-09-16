@@ -3,10 +3,13 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <ctime>
 #include <vtx/vtx.h>
 #include <quat/quat.h>
 #include <body.h>
 using namespace std;
+
+long int mission_time=0;
 
 class SpaceShip:public Body
 //TODO: create an all inclusive class for 
@@ -101,7 +104,7 @@ void
 initEarth (void)
 {
   loadTexture (DATADIR "earth.pnm", Earth.texture);
-  Earth.mass = 5.9736E24;
+  Earth.mass = 5.9736E15;
   Earth.radius = 6371E3;
   Earth.pos = Vtx (0, 0, 0);
   Earth.rot = Quat (23.5, Vtx (0, 1, 0)) * Quat (90, Vtx (1, 0, 0));	//give the Earth it's tilt
@@ -117,8 +120,8 @@ initRocket (void)
   loadTexture (DATADIR "8ball.pnm", ballTexture);
   Rocket.mass = 1000;
   Rocket.radius = 5;
-  Rocket.pos = Earth.pos + Vtx (Earth.radius * 1.0470219435736676, 0, 0);	//TODO: Find a better value
-  Rocket.vel = Vtx (0, 0, 790819.3046712915 * 1.5);	//TODO: find a good value 
+  Rocket.pos = Earth.pos + Vtx (Earth.radius+420000, 0, 0);	//TODO: Find a better value
+  Rocket.vel = Vtx (0, 0, 7658.50387).rotate(51.65, Z);	//TODO: find a good value 
   //FIXME: use a config 
   //TODO: make a function to determine circular speed or something
   Rocket.rvel = 0.000001;
@@ -240,9 +243,12 @@ keyboard (unsigned char key, int x, int y)
       camera=Quat(2,1,0,0)*camera;
       break;
     case ' ':
-      cout << Rocket.altitude (Earth) << " " << Rocket.
-	vel.magnitude () << " " << Rocket.pos.x << " " << Rocket.
-	pos.y << " " << Rocket.pos.z << endl;
+      cout << time(NULL)-mission_time << " " 
+	   << Rocket.altitude (Earth) << " " 
+	   << Rocket.vel.magnitude () << " " 
+	   << Rocket.pos.x << " " 
+	   << Rocket.pos.y << " " 
+	   << Rocket.pos.z << endl;
     default:
       break;
     }
@@ -279,6 +285,7 @@ main (int argc, char **argv)
   initRocket ();
   camera = Quat (.1, 0, 0, 1);
   glutKeyboardFunc (keyboard);
+  mission_time=time(NULL);
   glutMainLoop ();
   return 0;
 }

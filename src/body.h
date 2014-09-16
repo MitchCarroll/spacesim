@@ -6,7 +6,7 @@
 #include <GL/glut.h>
 using namespace std;
 
-const double G = 6.673E-11;	//universal gravitational constant
+const double G = 6.67384E-11;	//universal gravitational constant
 
 class Body
 {

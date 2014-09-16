@@ -12,7 +12,7 @@ AC_CONFIG_SUBDIRS([vtx quat])
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
-PKG_CHECK_MODULES([GUILE],[guile-1.8])
+#PKG_CHECK_MODULES([GUILE],[guile])
 # Checks for libraries.
 AC_CHECK_LIB([GL], [glBegin])
 AC_CHECK_LIB([GLU], [gluPerspective])
