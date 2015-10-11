@@ -2,7 +2,7 @@
 #define QUAT_H 1
 
 //#include "config.h"
-#include <vtx/vtx.h>
+#include <vtx.h>
 #include <cmath>
 using namespace std;
 

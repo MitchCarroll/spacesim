@@ -1,0 +1,3 @@
+/home/mowgli/projects/spacesim/quat/CMakeFiles/quat.dir
+/home/mowgli/projects/spacesim/CMakeFiles/spacesim.dir
+/home/mowgli/projects/spacesim/vtx/CMakeFiles/vtx.dir

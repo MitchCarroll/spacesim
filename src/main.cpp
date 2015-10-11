@@ -1,11 +1,10 @@
-#include <config.h>
 #include <GL/glut.h>
 #include <iostream>
 #include <fstream>
 #include <cmath>
 #include <ctime>
-#include <vtx/vtx.h>
-#include <quat/quat.h>
+#include <vtx.h>
+#include <quat.h>
 #include <body.h>
 using namespace std;
 
@@ -260,7 +259,7 @@ main (int argc, char **argv)
   glutInit (&argc, argv);
   glutInitWindowSize (1024, 600);
   glutInitDisplayMode (GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-  glutCreateWindow (PACKAGE_STRING);
+  glutCreateWindow ("SpaceSim | C. Mitch Carroll");
   glMatrixMode (GL_PROJECTION);
   glLoadIdentity ();
   gluPerspective (90, 1024.0 / 600, .1, 1.7E308);

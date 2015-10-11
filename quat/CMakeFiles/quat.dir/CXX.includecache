@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mowgli/projects/spacesim/quat/quat.cpp
+quat.h
+-
+
+quat/quat.h
+vtx.h
+-
+cmath
+-
+
+vtx/vtx.h
+cmath
+-
+

@@ -1,8 +1,8 @@
 #ifndef BODY_H
 #define BODY_H 1
 
-#include <vtx/vtx.h>
-#include <quat/quat.h>
+#include <vtx.h>
+#include <quat.h>
 #include <GL/glut.h>
 using namespace std;
 

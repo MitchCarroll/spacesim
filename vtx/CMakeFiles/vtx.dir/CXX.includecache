@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mowgli/projects/spacesim/vtx/vtx.cpp
+vtx.h
+/home/mowgli/projects/spacesim/vtx/vtx.h
+
+/home/mowgli/projects/spacesim/vtx/vtx.h
+cmath
+-
+

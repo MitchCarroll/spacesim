@@ -76,15 +76,10 @@ Quat Quat::operator= (Vtx v)
 
 Quat Quat::multiply (Quat q)
 {
-  Quat
-    r;
-  r.w = w * q.w - x * q.x - y * q.y - z * q.z;
-  r.x = w * q.x + x * q.w + y * q.z + z * q.y;
-  r.y = w * q.y - x * q.z + y * q.w + z * q.x;
-  r.z = w * q.z + x * q.y - y * q.x + z * q.w;
-
-  //return r;
-  return r.normalize ();	//should normalize?
+  return Quat(w * q.w - x * q.x - y * q.y - z * q.z,
+	      w * q.x + x * q.w + y * q.z + z * q.y,
+	      w * q.y - x * q.z + y * q.w + z * q.x,
+	      w * q.z + x * q.y - y * q.x + z * q.w);
 }
 
 Quat Quat::operator* (Quat q)

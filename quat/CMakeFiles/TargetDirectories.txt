@@ -1,0 +1,1 @@
+/home/mowgli/projects/spacesim/quat/CMakeFiles/quat.dir
