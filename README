@@ -53,3 +53,7 @@ that all user-created spacecraft and such follow standards, and are therefore
 realistic, and compatible with the simulator, and all other spacecraft. This 
 way, in a multi-user environment, all vessels are sane, and all players have to
 obey the same laws of physics.
+
+For those of me who are curious like me, I will probably implement the EMDrive
+and/or the Cannae drive (though, I'm less sure about that one) so we can see 
+it MIGHT work in practice, and maybe try out some conceptual designs.
