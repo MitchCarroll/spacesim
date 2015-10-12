@@ -119,7 +119,7 @@ initRocket (void)
   loadTexture (DATADIR "8ball.pnm", ballTexture);
   Rocket.mass = 1000;
   Rocket.radius = 5;
-  Rocket.pos = Earth.pos + Vtx (Earth.radius+420000, 0, 0);	//TODO: Find a better value
+  Rocket.pos = Earth.pos + Vtx (Earth.radius+420e+3, 0, 0);	//TODO: Find a better value
   Rocket.vel = Vtx (0, 0, 7658.50387).rotate(51.65, Z);	//TODO: find a good value 
   //FIXME: use a config 
   //TODO: make a function to determine circular speed or something
@@ -133,7 +133,7 @@ display (void)
   glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity ();
   Vtx r = Rocket.rot.axis ();
-  Quat e = Earth.rot.axis ();
+  Vtx e = Earth.rot.axis ();
   Vtx c = camera.rotate (Vtx (0, 0, -1)) * Rocket.radius * zoom;
   Vtx u = camera.rotate (Vtx (0, 1, 0));
   
@@ -155,14 +155,15 @@ display (void)
 	     u.x, u.y, u.z);
   glLightfv (GL_LIGHT0, GL_POSITION, sun_pos);
 
-  //draw rocket
-  Rocket.display ();
 
   //draw earth
   glPushMatrix ();
   glTranslatef (-Rocket.pos.x, -Rocket.pos.y, -Rocket.pos.z);
   Earth.display ();
   glPopMatrix ();
+
+  //draw rocket
+  Rocket.display ();
 
   glutSwapBuffers ();
 }
@@ -228,18 +229,25 @@ keyboard (unsigned char key, int x, int y)
     case '.':			//yaw right
       rv = rv * Quat (-.1, 0, 1, 0);
       break;
+    case '<':			//yaw left
+      rv = rv * Quat (.1, 0, 1, 0);
+      break;
+    case '>':			//yaw right
+      rv = rv * Quat (-.1, 0, 1, 0);
+      break;
+
       //////camera rotation
     case 'a':
-      camera=Quat(-2,0,1,0)*camera;
+      camera=camera*Quat(-2,0,1,0);
       break;
     case 'd':
-      camera=Quat(2,0,1,0)*camera;
+      camera=camera*Quat(2,0,1,0);
       break;
     case 'w':
-      camera=Quat(-2,1,0,0)*camera;
+      camera=camera*Quat(-2,1,0,0);
       break;
     case 's':
-      camera=Quat(2,1,0,0)*camera;
+      camera=camera*Quat(2,1,0,0);
       break;
     case ' ':
       cout << time(NULL)-mission_time << " " 
@@ -251,6 +259,8 @@ keyboard (unsigned char key, int x, int y)
     default:
       break;
     }
+  Rocket.axis = rv.axis ();
+  Rocket.rvel = rv.angle ();
 }
 
 int

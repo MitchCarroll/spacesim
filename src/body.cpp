@@ -50,6 +50,7 @@ Body::display (void)
   glRotatef (an, ax.x, ax.y, ax.z);
   glBindTexture (GL_TEXTURE_2D, texture);
   glMaterialfv (GL_FRONT_AND_BACK, GL_DIFFUSE, mat_dif);
-  gluSphere (quadric, radius, 36, 18);
+  gluSphere (quadric, radius, 36, 18); //TODO: Find a good set of numbers...
+  //perhaps a routine which will select numbers based on size
   glPopMatrix ();
 }

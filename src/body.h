@@ -26,7 +26,7 @@ public:
   double mass;			//in kg
   double radius;		//in m (used for bounding volumes, and rendering celestial bodies)
   Vtx pos;			//in m
-  Quat rot;			//in deg
+  Quat rot;			//in deg?
   Vtx vel;			//in m/s
   Vtx axis;
   double rvel;			//in deg/s
