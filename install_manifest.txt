@@ -1,8 +1,0 @@
-/usr/local/spacesim/data/rocket.pnm
-/usr/local/spacesim/data/8ball.pnm
-/usr/local/spacesim/data/earth.pnm
-/usr/local/bin/spacesim
-/usr/local/include/vtx.h
-/usr/local/lib/libvtx.so
-/usr/local/include/quat.h
-/usr/local/lib/libquat.so

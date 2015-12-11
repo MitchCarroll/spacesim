@@ -10,3 +10,5 @@ stamp-h1
 .deps
 .deps/*
 spacesim
+CMakeCache.txt
+install_manifest.txt
