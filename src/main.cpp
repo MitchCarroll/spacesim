@@ -12,7 +12,8 @@ long int mission_time=0;
 
 class SpaceShip:public Body
 //TODO: create an all inclusive class for 
-// spacecraft, and expose its particulars to Guile (e.g.: make-craft, set-mass)
+// spacecraft, and expose its particulars to Guile 
+// (e.g.: make-craft, set-mass)
 {
 public:
   void display (void);
@@ -60,7 +61,8 @@ GLuint ballTexture = 0;
 void
 quit ()
 {
-  //at some point, some "de-initialization" needs to be done. deleting textures and such.
+  //at some point, some "de-initialization" needs to be done. 
+  //deleting textures and such.
   exit (0);
 }
 
@@ -106,7 +108,8 @@ initEarth (void)
   Earth.mass = 5.9736E15;
   Earth.radius = 6371E3;
   Earth.pos = Vtx (0, 0, 0);
-  Earth.rot = Quat (23.5, Vtx (0, 1, 0)) * Quat (90, Vtx (1, 0, 0));	//give the Earth it's tilt
+  //give the Earth it's tilt
+  Earth.rot = Quat (23.5, Vtx (0, 1, 0)) * Quat (90, Vtx (1, 0, 0));	
   Earth.vel = Vtx (0, 0, 0);
   Earth.axis = Vtx (0, 0, 1);
   Earth.rvel = 360 / 24 / 60 / 60 / 24;	//start the Earth spinning
@@ -119,8 +122,10 @@ initRocket (void)
   loadTexture (DATADIR "8ball.pnm", ballTexture);
   Rocket.mass = 1000;
   Rocket.radius = 5;
-  Rocket.pos = Earth.pos + Vtx (Earth.radius+420e+3, 0, 0);	//TODO: Find a better value
-  Rocket.vel = Vtx (0, 0, 7658.50387).rotate(51.65, Z);	//TODO: find a good value 
+  //TODO: Find a better value
+ //TODO: find a good value  
+  Rocket.pos = Earth.pos + Vtx (Earth.radius+420e+3, 0, 0);	
+  Rocket.vel = Vtx (0, 0, 7658.50387).rotate(51.65, Z);	
   //FIXME: use a config 
   //TODO: make a function to determine circular speed or something
   Rocket.rvel = 0.000001;
