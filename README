@@ -1,16 +1,16 @@
-I love Orbiter (2006, 2010, I love them both), but they both suck at running 
+I love Orbiter (2006, 2010, 2016... I love them all), but they both suck at running 
 with Wine, and don't run natively in anything other than Windows. This is 
 especially sad, because it seems to me that many of the people that would enjoy
 Linux, and those that would enjoy Orbiter are the same people.
 
-Anyway, I don't know if i could ever write the "next Orbiter", but I'm going to
+Anyway, I don't know if I could ever write the "next Orbiter", but I'm going to
 take a stab at writing my own take on space simulation.
 
 I'm also sick and tired of "space simulators" that simulate space itself, but 
-not much more, or that gives you 'newtonian' motion, but with no gravity! 
+not much more, or that gives you 'Newtonian' motion, but with no gravity! 
 Probably THE WORST give you non-inertial movement, no gravity, no physics.
 
-Elite/OOlite is still pretty cool, though..
+Elite/OOlite is still pretty cool, though...
 
 I'd like to implement multiplayer capability as well. I mean, who DOESN'T want 
 a persistant, realistic MMO space sim?
@@ -57,3 +57,16 @@ obey the same laws of physics.
 For those of me who are curious like me, I will probably implement the EMDrive
 and/or the Cannae drive (though, I'm less sure about that one) so we can see 
 it MIGHT work in practice, and maybe try out some conceptual designs.
+
+UPDATE:
+Since Children of a Dead Earth came out, and since it is basically everything I 
+want in a space game, and furthermore because the author seems to be ignoring the 
+Linux community (which, again, is missing out on a STUNNING opportunity to tap 
+into an engaged and energetic user base), I have decided to take some time, and
+reevaluate which direction this project should go in, if any. Some questions are:
+Is there any way that I could do it better?
+Is there more demand for a simulation like Orbiter, or for a game like CoaDE?
+Should I perhaps switch to an already well-developed game engine to handle the 
+input and display and such? If so, would the bundled physics engine be sufficient,
+or would I need to write my own? Similarly, are the display capabilities sufficient
+(extremely long view distances, long LOD chains, realistic lighting without pre-baking...)?
